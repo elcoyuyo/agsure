@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgSure.ai — Materiales de trabajo</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .hero-idx { background: var(--gray-900); color: #fff; padding: 4rem 0; text-align: center; }
+    .hero-idx h1 { color: #fff; margin-bottom: 0.75rem; }
+    .hero-idx p { color: #888; max-width: 520px; margin: 0 auto; }
+    .idx-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 3rem 0; }
+    .idx-card { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; text-decoration: none; color: var(--text); transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s; display: block; }
+    .idx-card:hover { border-color: var(--blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .idx-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .idx-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .idx-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+    .context-box { background: var(--surface); border-radius: var(--radius-lg); padding: 2rem; margin: 2rem 0; }
+    .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem; }
+    .ctx-item h4 { font-size: 13px; font-weight: 700; margin-bottom: 0.4rem; }
+    .ctx-item p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    @media (max-width: 768px) { .idx-grid { grid-template-columns: 1fr; } .context-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="logo-mark">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 2L4 7v9c0 6.6 5.1 12.8 12 14.3C22.9 28.8 28 22.6 28 16V7L16 2z" fill="#1A4F8A" opacity="0.15"/>
+        <path d="M16 2L4 7v9c0 6.6 5.1 12.8 12 14.3C22.9 28.8 28 22.6 28 16V7L16 2z" fill="none" stroke="#1A4F8A" stroke-width="1.5"/>
+        <path d="M9 18c2-3 4-5 7-5s5 2 7 5" stroke="#2A7A2A" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M7 21c2-4 5-7 9-7s7 3 9 7" stroke="#2A7A2A" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.5"/>
+        <circle cx="16" cy="11" r="2.5" fill="#F5A623"/>
+        <path d="M16 8.5V9.5" stroke="#F5A623" stroke-width="1" stroke-linecap="round"/>
+        <ellipse cx="16" cy="17" rx="10" ry="3" fill="none" stroke="#3BA0D8" stroke-width="1" opacity="0.6"/>
+        <path d="M13 14.5l1-2 1 1 1-1.5 1 2" fill="none" stroke="#1A4F8A" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div class="logo-wordmark"><span class="ag">Ag</span><span class="sure">Sure</span><span class="dot">.</span><span class="ai">ai</span></div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link active">Inicio</a>
+      <a href="plan.html" class="nav-link">Plan de negocios</a>
+      <a href="landing.html" class="nav-link">Landing</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero-idx">
+  <div class="container">
+    <span class="eyebrow">Materiales de trabajo — Mayo 2026</span>
+    <h1><span style="color:var(--green)">Ag</span><span style="color:#fff">Sure</span><span style="color:var(--blue-bright)">.ai</span></h1>
+    <p style="margin-top:0.75rem">Plataforma de verificación de siniestros agropecuarios con teledetección. Materiales para análisis con Martín.</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="idx-grid">
+    <a href="plan.html" class="idx-card">
+      <div class="idx-icon">📋</div>
+      <h3>Plan de negocios</h3>
+      <p>FODA, mercado en USD, jugadores, modelo de precios, costos, roadmap y análisis crítico de viabilidad.</p>
+      <div style="margin-top:0.75rem"><span class="badge badge-blue">Documento central</span></div>
+    </a>
+    <a href="landing.html" class="idx-card">
+      <div class="idx-icon">🌐</div>
+      <h3>Propuesta comercial</h3>
+      <p>Landing page con posicionamiento, features, proceso, precios y opciones de marca.</p>
+      <div style="margin-top:0.75rem"><span class="badge badge-green">Para clientes</span></div>
+    </a>
+    <a href="dashboard.html" class="idx-card">
+      <div class="idx-icon">🗺️</div>
+      <h3>Prototipo plataforma</h3>
+      <p>Dashboard interactivo con mapa de cartera, siniestros, alertas y panel de detalle clickeable.</p>
+      <div style="margin-top:0.75rem"><span class="badge badge-amber">Interactivo</span></div>
+    </a>
+  </div>
+
+  <div class="context-box">
+    <h3>Contexto del proyecto</h3>
+    <div class="context-grid">
+      <div class="ctx-item"><h4>El equipo</h4><p><strong>Matías</strong> — sensoramiento remoto (SAR, óptico, drones), desarrollo de plataforma. <strong>Martín</strong> — 15 años en seguros generales, red de contactos, candidato a matrícula SSN.</p></div>
+      <div class="ctx-item"><h4>La idea central</h4><p>Ofrecer a aseguradoras agropecuarias verificación técnica de siniestros con teledetección. Dos modelos: suscripción SaaS por ha asegurada + fee por siniestro verificado.</p></div>
+      <div class="ctx-item"><h4>El diferencial</h4><p>No existe en Argentina un competidor que combine SAR + óptico + drone + plataforma propia + matrícula de liquidador local. Pero el mercado tiene barreras de entrada culturales y regulatorias que hay que considerar.</p></div>
+      <div class="ctx-item"><h4>Próximos pasos</h4><p>1. Matrícula SSN (Martín). 2. Caso demo con evento histórico. 3. Reuniones con gerencias de siniestros. 4. Definir figura legal y rol de cada socio.</p></div>
+    </div>
+  </div>
+
+  <div style="text-align:center; padding: 2rem 0 4rem">
+    <a href="plan.html" class="btn btn-primary">Empezar por el plan de negocios →</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <strong>AgSure.ai</strong> · Intelligent Agricultural Insurance · Buenos Aires, Argentina<br>
+  <span style="margin-top:6px; display:block"><a href="plan.html">Plan de negocios</a> · <a href="landing.html">Landing</a> · <a href="dashboard.html">Dashboard</a></span>
+</footer>
+</body>
+</html>
