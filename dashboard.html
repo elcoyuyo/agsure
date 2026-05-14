@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgSure.ai — Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: #F0F2F0; overflow: hidden; }
+    .app { display: flex; height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 200px;
+      background: #fff;
+      border-right: 1px solid #E4E4E4;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .sb-logo {
+      padding: 18px 16px 16px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #1A1A1A;
+      letter-spacing: -0.02em;
+      border-bottom: 1px solid #E4E4E4;
+    }
+    .sb-logo span { color: var(--green); }
+    .sb-section { padding: 14px 12px 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: #B0B0B0; }
+    .sb-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 12px; margin: 1px 6px;
+      border-radius: 7px;
+      font-size: 13px; color: #5A5A5A;
+      cursor: pointer; transition: background 0.12s, color 0.12s;
+      user-select: none;
+    }
+    .sb-item:hover { background: #F5F5F5; color: #1A1A1A; }
+    .sb-item.active { background: #E3EDF8; color: var(--green-600); font-weight: 600; }
+    .sb-icon { font-size: 16px; }
+    .sb-badge {
+      margin-left: auto; font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 10px;
+      background: #FCEBEB; color: #A32D2D;
+    }
+    .sb-footer {
+      margin-top: auto; padding: 12px 14px;
+      border-top: 1px solid #E4E4E4;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sb-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #E3EDF8; color: var(--green-600);
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .sb-name { font-size: 12px; font-weight: 600; color: #1A1A1A; }
+    .sb-role { font-size: 10px; color: #8A8A8A; }
+
+    /* MAIN */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* TOPBAR */
+    .topbar {
+      background: #fff; border-bottom: 1px solid #E4E4E4;
+      padding: 12px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .topbar-title { font-size: 14px; font-weight: 700; color: #1A1A1A; }
+    .topbar-sub { font-size: 11px; color: #8A8A8A; margin-top: 1px; }
+    .topbar-actions { display: flex; gap: 8px; align-items: center; }
+    .tb-btn {
+      font-size: 12px; padding: 6px 12px; border-radius: 6px;
+      border: 1px solid #E4E4E4; background: #fff; color: #5A5A5A;
+      cursor: pointer; display: flex; align-items: center; gap: 4px;
+      transition: background 0.12s;
+    }
+    .tb-btn:hover { background: #F5F5F5; }
+    .tb-btn-primary { background: var(--green); color: #fff; border-color: var(--green); font-weight: 600; }
+    .tb-btn-primary:hover { background: #164280; }
+
+    /* CONTENT */
+    .content {
+      flex: 1; overflow-y: auto; padding: 16px 20px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+
+    /* METRICS ROW */
+    .metrics-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .met {
+      background: #fff; border: 1px solid #E4E4E4; border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .met-label { font-size: 11px; color: #8A8A8A; margin-bottom: 5px; font-weight: 500; }
+    .met-val { font-size: 22px; font-weight: 700; color: #1A1A1A; letter-spacing: -0.02em; }
+    .met-val small { font-size: 13px; font-weight: 400; color: #8A8A8A; }
+    .met-delta { font-size: 11px; margin-top: 3px; }
+    .dpos { color: var(--green-600); } .dneg { color: #A32D2D; } .dwarn { color: #854F0B; }
+
+    /* MAP + PANEL */
+    .main-grid { display: grid; grid-template-columns: 1fr 280px; gap: 14px; flex: 1; min-height: 0; }
+
+    /* MAP */
+    .map-card {
+      background: #fff; border: 1px solid #E4E4E4; border-radius: 10px;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .panel-hdr {
+      padding: 10px 14px; border-bottom: 1px solid #E4E4E4;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .panel-title { font-size: 13px; font-weight: 700; color: #1A1A1A; }
+    .panel-sub { font-size: 11px; color: #8A8A8A; }
+    .legend-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .leg { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #6B6B6B; }
+    .leg-sq { width: 10px; height: 10px; border-radius: 2px; }
+
+    /* RIGHT PANEL */
+    .right-panel { display: flex; flex-direction: column; gap: 12px; }
+
+    /* SINIESTROS LIST */
+    .sin-list { background: #fff; border: 1px solid #E4E4E4; border-radius: 10px; overflow: hidden; }
+    .sin-hdr { padding: 9px 12px; border-bottom: 1px solid #E4E4E4; display: flex; justify-content: space-between; align-items: center; }
+    .sin-item {
+      padding: 9px 12px; border-bottom: 1px solid #EBEBEB;
+      cursor: pointer; transition: background 0.1s;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+    }
+    .sin-item:last-child { border-bottom: none; }
+    .sin-item:hover { background: #F7F7F5; }
+    .sin-item.active { background: #F0FAF5; border-left: 3px solid var(--green); }
+    .sin-id { font-size: 10px; color: #B0B0B0; }
+    .sin-name { font-size: 12px; font-weight: 600; color: #1A1A1A; margin: 1px 0; }
+    .sin-detail { font-size: 11px; color: #8A8A8A; }
+    .sin-badge { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+    .bp { background: #FAEEDA; color: #854F0B; }
+    .ba { background: #E6F1FB; color: var(--blue); }
+    .bv { background: #E3EDF8; color: var(--green-600); }
+
+    /* DETAIL PANEL */
+    .detail-card { background: #fff; border: 1px solid #E4E4E4; border-radius: 10px; overflow: hidden; flex: 1; }
+    .detail-body { padding: 10px 12px; }
+    .det-row { display: flex; justify-content: space-between; font-size: 12px; padding: 5px 0; border-bottom: 1px solid #EBEBEB; }
+    .det-row:last-child { border-bottom: none; }
+    .det-key { color: #8A8A8A; }
+    .det-val { font-weight: 600; color: #1A1A1A; }
+    .det-tag { display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+    .progress-section { padding: 10px 12px; border-top: 1px solid #EBEBEB; }
+    .prog-label { font-size: 11px; color: #8A8A8A; margin-bottom: 4px; }
+    .prog-track { background: #EBEBEB; border-radius: 4px; height: 6px; overflow: hidden; }
+    .prog-fill { height: 100%; border-radius: 4px; background: #A32D2D; }
+    .action-row { padding: 10px 12px; border-top: 1px solid #EBEBEB; display: flex; gap: 6px; }
+    .act-btn { flex: 1; font-size: 11px; font-weight: 600; padding: 6px 0; border-radius: 6px; border: none; cursor: pointer; text-align: center; }
+    .act-primary { background: var(--green); color: #fff; }
+    .act-secondary { background: #F0F2F0; color: #5A5A5A; }
+
+    /* NDVI MINI CHART */
+    .ndvi-card { background: #fff; border: 1px solid #E4E4E4; border-radius: 10px; padding: 10px 12px; }
+    .ndvi-bars { display: flex; align-items: flex-end; gap: 4px; height: 48px; margin: 8px 0 4px; }
+    .nb { flex: 1; border-radius: 2px 2px 0 0; }
+    .ndvi-labs { display: flex; gap: 4px; font-size: 9px; color: #B0B0B0; }
+    .ndvi-labs span { flex: 1; text-align: center; }
+
+    /* ALERTS STRIP */
+    .alerts-strip { display: flex; gap: 8px; flex-wrap: wrap; }
+    .alert-chip {
+      font-size: 11px; padding: 5px 10px; border-radius: 20px;
+      border: 1px solid; cursor: pointer;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .alert-warn { background: #FAEEDA; border-color: #FAC775; color: #854F0B; }
+    .alert-err { background: #FCEBEB; border-color: #F7C1C1; color: #A32D2D; }
+    .alert-info { background: #E6F1FB; border-color: #B5D4F4; color: var(--blue); }
+    .alert-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    /* Note overlay */
+    .demo-note {
+      position: fixed; bottom: 16px; right: 16px;
+      background: #1A1A1A; color: #fff;
+      font-size: 11px; padding: 8px 14px; border-radius: 8px;
+      border: 1px solid #333; max-width: 240px; line-height: 1.5;
+      z-index: 200;
+    }
+    .demo-note a { color: #5DCAA5; text-decoration: none; }
+    .close-note { position: absolute; top: 6px; right: 8px; cursor: pointer; color: #888; font-size: 14px; background: none; border: none; }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-logo"><span class="ag">Ag</span><span class="sure">Sure</span><span class="dot">.</span><span class="ai">ai</span></div>
+
+    <div class="sb-section">Principal</div>
+    <div class="sb-item active" onclick="setView('cartera')">
+      <span class="sb-icon">🗺️</span> Cartera
+    </div>
+    <div class="sb-item" onclick="setView('siniestros')">
+      <span class="sb-icon">📋</span> Siniestros <span class="sb-badge">3</span>
+    </div>
+    <div class="sb-item" onclick="setView('alertas')">
+      <span class="sb-icon">🔔</span> Alertas
+    </div>
+    <div class="sb-item" onclick="setView('ndvi')">
+      <span class="sb-icon">📈</span> NDVI / SAR
+    </div>
+
+    <div class="sb-section">Análisis</div>
+    <div class="sb-item">
+      <span class="sb-icon">📄</span> Informes
+    </div>
+    <div class="sb-item">
+      <span class="sb-icon">🔍</span> Antifraude
+    </div>
+    <div class="sb-item">
+      <span class="sb-icon">⛅</span> Clima / SMN
+    </div>
+
+    <div class="sb-section">Config.</div>
+    <div class="sb-item">
+      <span class="sb-icon">⚙️</span> Configuración
+    </div>
+
+    <div class="sb-footer">
+      <div class="sb-avatar">SS</div>
+      <div>
+        <div class="sb-name">Sancor Seguros</div>
+        <div class="sb-role">Gerencia Siniestros</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <div class="topbar-title" id="topbar-title">Cartera — Campaña 2024/25</div>
+        <div class="topbar-sub">Buenos Aires · Córdoba · Santa Fe · 2,1M ha aseguradas</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="tb-btn">🔍 Filtros</button>
+        <button class="tb-btn">⬇ Exportar</button>
+        <button class="tb-btn tb-btn-primary">+ Nuevo siniestro</button>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- ALERTS STRIP -->
+      <div class="alerts-strip">
+        <div class="alert-chip alert-err"><div class="alert-dot"></div>SIN-2024-031 · Incendio activo · Córdoba Norte</div>
+        <div class="alert-chip alert-warn"><div class="alert-dot"></div>Estrés hídrico detectado · 3 lotes · Santa Fe Sur</div>
+        <div class="alert-chip alert-warn"><div class="alert-dot"></div>NDVI bajo umbral · 4 lotes · Entre Ríos</div>
+        <div class="alert-chip alert-info"><div class="alert-dot"></div>SAR actualizado · Sentinel-1 · hace 6 horas</div>
+      </div>
+
+      <!-- METRICS -->
+      <div class="metrics-row">
+        <div class="met">
+          <div class="met-label">Hectáreas activas</div>
+          <div class="met-val">2,1M<small> ha</small></div>
+          <div class="met-delta dpos">↑ 8% vs campaña anterior</div>
+        </div>
+        <div class="met">
+          <div class="met-label">Siniestros abiertos</div>
+          <div class="met-val">23</div>
+          <div class="met-delta dneg">↑ 3 nuevos esta semana</div>
+        </div>
+        <div class="met">
+          <div class="met-label">Tiempo promedio informe</div>
+          <div class="met-val">31<small> hs</small></div>
+          <div class="met-delta dpos">↓ vs 7+ días tradicional</div>
+        </div>
+        <div class="met">
+          <div class="met-label">Alertas activas</div>
+          <div class="met-val">7</div>
+          <div class="met-delta dwarn">3 estrés · 4 NDVI bajo</div>
+        </div>
+      </div>
+
+      <!-- MAP + RIGHT PANEL -->
+      <div class="main-grid" style="flex:1; min-height:0">
+
+        <!-- MAP -->
+        <div class="map-card">
+          <div class="panel-hdr">
+            <div>
+              <div class="panel-title">Mapa de cartera</div>
+              <div class="panel-sub">NDVI actual · Click en un lote para ver detalle</div>
+            </div>
+            <div class="legend-row">
+              <div class="leg"><div class="leg-sq" style="background:#4aa830"></div>Normal</div>
+              <div class="leg"><div class="leg-sq" style="background:#854F0B"></div>Estrés</div>
+              <div class="leg"><div class="leg-sq" style="background:#A32D2D"></div>Siniestro</div>
+              <div class="leg"><div class="leg-sq" style="background:var(--blue)"></div>Análisis</div>
+            </div>
+          </div>
+          <svg width="100%" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" style="display:block;flex:1">
+            <rect width="700" height="360" fill="#141a14"/>
+            <!-- Grid -->
+            <line x1="0" y1="90" x2="700" y2="90" stroke="#1e281e" stroke-width="1"/>
+            <line x1="0" y1="180" x2="700" y2="180" stroke="#1e281e" stroke-width="1"/>
+            <line x1="0" y1="270" x2="700" y2="270" stroke="#1e281e" stroke-width="1"/>
+            <line x1="175" y1="0" x2="175" y2="360" stroke="#1e281e" stroke-width="1"/>
+            <line x1="350" y1="0" x2="350" y2="360" stroke="#1e281e" stroke-width="1"/>
+            <line x1="525" y1="0" x2="525" y2="360" stroke="#1e281e" stroke-width="1"/>
+
+            <!-- Buenos Aires fields -->
+            <rect x="12" y="12" width="72" height="62" rx="3" fill="#3d7a20" opacity="0.85" class="lote" onclick="selectLote('BA-001')"/>
+            <rect x="92" y="10" width="68" height="68" rx="3" fill="#5ab030" opacity="0.85" class="lote" onclick="selectLote('BA-002')"/>
+            <rect x="12" y="86" width="95" height="75" rx="3" fill="#4a9228" opacity="0.8" class="lote" onclick="selectLote('BA-003')"/>
+            <rect x="115" y="90" width="50" height="68" rx="3" fill="#5ab030" opacity="0.8" class="lote"/>
+            <rect x="12" y="173" width="75" height="70" rx="3" fill="#3d7a20" opacity="0.8" class="lote"/>
+            <rect x="95" y="175" width="70" height="65" rx="3" fill="#4a9228" opacity="0.75" class="lote"/>
+            <rect x="12" y="256" width="120" height="90" rx="3" fill="#5ab030" opacity="0.75" class="lote"/>
+            <rect x="140" y="260" width="25" height="85" rx="3" fill="#2d5a1a" opacity="0.7" class="lote"/>
+
+            <!-- Córdoba fields -->
+            <rect x="188" y="12" width="75" height="65" rx="3" fill="#5ab030" opacity="0.8" class="lote"/>
+            <rect x="271" y="10" width="65" height="70" rx="3" fill="#4a9228" opacity="0.85" class="lote"/>
+
+            <!-- Incendio siniestro -->
+            <rect x="188" y="90" width="100" height="80" rx="3" fill="#5a0d0d" opacity="0.92" class="lote sin-lote" id="lote-031" onclick="selectSiniestro('SIN-2024-031')" style="cursor:pointer"/>
+            <rect x="188" y="90" width="100" height="80" rx="3" fill="none" stroke="#FF4444" stroke-width="2" stroke-dasharray="5 3"/>
+            <text x="238" y="126" fill="rgba(255,255,255,0.95)" font-size="10" text-anchor="middle" font-family="sans-serif" font-weight="700">031 · Incendio</text>
+            <text x="238" y="140" fill="rgba(255,120,120,0.85)" font-size="8.5" text-anchor="middle" font-family="sans-serif">1.240 ha · Córdoba N.</text>
+
+            <!-- Drone path -->
+            <path d="M238 90 Q255 65 285 55" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-dasharray="3 2"/>
+            <circle cx="290" cy="52" r="5" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.4)" stroke-width="0.7"/>
+            <text x="298" y="56" fill="rgba(255,255,255,0.5)" font-size="8" font-family="sans-serif">🚁</text>
+
+            <!-- Estrés hídrico -->
+            <rect x="188" y="182" width="90" height="70" rx="3" fill="#6e3e08" opacity="0.85" class="lote sin-lote" onclick="selectSiniestro('SIN-2024-029')" style="cursor:pointer"/>
+            <rect x="188" y="182" width="90" height="70" rx="3" fill="none" stroke="#EF9F27" stroke-width="1.5" stroke-dasharray="4 2"/>
+            <text x="233" y="213" fill="rgba(255,180,50,0.95)" font-size="9.5" text-anchor="middle" font-family="sans-serif" font-weight="700">029 · Sequía</text>
+            <text x="233" y="225" fill="rgba(255,180,50,0.7)" font-size="8" text-anchor="middle" font-family="sans-serif">3.800 ha · SF Sur</text>
+
+            <!-- SAR análisis -->
+            <rect x="286" y="182" width="55" height="68" rx="3" fill="#0a2a4a" opacity="0.9" class="lote sin-lote" onclick="selectSiniestro('SIN-2024-027')" style="cursor:pointer"/>
+            <rect x="286" y="182" width="55" height="68" rx="3" fill="none" stroke="#378ADD" stroke-width="1.2"/>
+            <text x="313" y="212" fill="rgba(100,180,255,0.9)" font-size="8.5" text-anchor="middle" font-family="sans-serif" font-weight="700">027</text>
+            <text x="313" y="224" fill="rgba(100,180,255,0.7)" font-size="7.5" text-anchor="middle" font-family="sans-serif">Granizo</text>
+
+            <rect x="188" y="262" width="80" height="85" rx="3" fill="#3d7a20" opacity="0.75" class="lote"/>
+            <rect x="276" y="265" width="65" height="80" rx="3" fill="#4a9228" opacity="0.7" class="lote"/>
+
+            <!-- Santa Fe fields -->
+            <rect x="362" y="12" width="80" height="65" rx="3" fill="#4a9228" opacity="0.8" class="lote"/>
+            <rect x="450" y="10" width="70" height="70" rx="3" fill="#5ab030" opacity="0.8" class="lote"/>
+            <rect x="362" y="90" width="95" height="72" rx="3" fill="#3d7a20" opacity="0.8" class="lote"/>
+            <rect x="465" y="92" width="55" height="68" rx="3" fill="#5ab030" opacity="0.75" class="lote"/>
+            <rect x="362" y="174" width="75" height="70" rx="3" fill="#4a9228" opacity="0.75" class="lote"/>
+            <rect x="445" y="176" width="75" height="66" rx="3" fill="#3d7a20" opacity="0.75" class="lote"/>
+            <rect x="362" y="256" width="110" height="90" rx="3" fill="#5ab030" opacity="0.7" class="lote"/>
+            <rect x="480" y="260" width="40" height="85" rx="3" fill="#4a9228" opacity="0.7" class="lote"/>
+
+            <!-- Entre Ríos -->
+            <rect x="538" y="15" width="80" height="62" rx="3" fill="#3d7a20" opacity="0.75" class="lote"/>
+            <rect x="626" y="12" width="66" height="68" rx="3" fill="#5ab030" opacity="0.7" class="lote"/>
+            <rect x="538" y="90" width="90" height="72" rx="3" fill="#4a9228" opacity="0.75" class="lote"/>
+            <rect x="636" y="92" width="56" height="68" rx="3" fill="#2d5a1a" opacity="0.7" class="lote"/>
+            <rect x="538" y="175" width="75" height="68" rx="3" fill="#5ab030" opacity="0.7" class="lote"/>
+            <rect x="621" y="178" width="71" height="62" rx="3" fill="#3d7a20" opacity="0.65" class="lote"/>
+            <rect x="538" y="256" width="100" height="90" rx="3" fill="#4a9228" opacity="0.65" class="lote"/>
+            <rect x="646" y="258" width="46" height="88" rx="3" fill="#2d5a1a" opacity="0.65" class="lote"/>
+
+            <!-- Province labels -->
+            <text x="88" y="345" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="sans-serif" letter-spacing="1.5">BUENOS AIRES</text>
+            <text x="262" y="345" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="sans-serif" letter-spacing="1.5">CÓRDOBA</text>
+            <text x="438" y="345" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="sans-serif" letter-spacing="1.5">SANTA FE</text>
+            <text x="613" y="345" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="sans-serif" letter-spacing="1.5">ENTRE RÍOS</text>
+          </svg>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right-panel">
+
+          <!-- Siniestros -->
+          <div class="sin-list">
+            <div class="sin-hdr">
+              <span class="panel-title">Siniestros recientes</span>
+              <span style="font-size:11px; color:#8A8A8A">23 activos</span>
+            </div>
+            <div class="sin-item" id="si-031" onclick="selectSiniestro('SIN-2024-031')">
+              <div>
+                <div class="sin-id">SIN-2024-031</div>
+                <div class="sin-name">El Trebol SA · Incendio</div>
+                <div class="sin-detail">1.240 ha · Córdoba Norte</div>
+              </div>
+              <span class="sin-badge ba">En análisis</span>
+            </div>
+            <div class="sin-item" id="si-029" onclick="selectSiniestro('SIN-2024-029')">
+              <div>
+                <div class="sin-id">SIN-2024-029</div>
+                <div class="sin-name">Los Algarrobos · Sequía</div>
+                <div class="sin-detail">3.800 ha · Santa Fe Sur</div>
+              </div>
+              <span class="sin-badge bp">Pendiente</span>
+            </div>
+            <div class="sin-item" id="si-027" onclick="selectSiniestro('SIN-2024-027')">
+              <div>
+                <div class="sin-id">SIN-2024-027</div>
+                <div class="sin-name">Agro Don Héctor · Granizo</div>
+                <div class="sin-detail">480 ha · Buenos Aires</div>
+              </div>
+              <span class="sin-badge bv">Verificado</span>
+            </div>
+          </div>
+
+          <!-- NDVI chart -->
+          <div class="ndvi-card">
+            <div class="panel-title" style="font-size:12px">NDVI promedio — cartera</div>
+            <div class="ndvi-bars">
+              <div class="nb" style="height:48%;background:#4aa830;opacity:0.65"></div>
+              <div class="nb" style="height:60%;background:#5ab030;opacity:0.75"></div>
+              <div class="nb" style="height:74%;background:#5ab030;opacity:0.85"></div>
+              <div class="nb" style="height:82%;background:#4aa830;opacity:0.9"></div>
+              <div class="nb" style="height:76%;background:#4aa830;opacity:0.85"></div>
+              <div class="nb" style="height:62%;background:#854F0B;opacity:0.8"></div>
+              <div class="nb" style="height:40%;background:#A32D2D;opacity:0.85"></div>
+              <div class="nb" style="height:44%;background:#854F0B;opacity:0.75"></div>
+            </div>
+            <div class="ndvi-labs">
+              <span>Ago</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dic</span><span>Ene</span><span>Feb</span><span>Mar</span>
+            </div>
+          </div>
+
+          <!-- DETAIL PANEL -->
+          <div class="detail-card" id="detail-panel">
+            <div class="panel-hdr">
+              <div class="panel-title" id="det-title">Seleccioná un siniestro</div>
+            </div>
+            <div class="detail-body" id="det-body">
+              <p style="font-size:12px; color:#B0B0B0; padding:8px 0">Hacé click en un lote del mapa o en un siniestro de la lista para ver el detalle.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- DEMO NOTE -->
+<div class="demo-note" id="demo-note">
+  <button class="close-note" onclick="document.getElementById('demo-note').style.display='none'">✕</button>
+  <strong>AgSure.ai — Prototipo</strong><br>
+  Hacé click en los lotes del mapa o en los siniestros para ver el panel de detalle.<br>
+  <a href="plan.html">← Ver plan de negocios</a> · <a href="landing.html">Ver landing →</a>
+</div>
+
+<script>
+const siniestros = {
+  'SIN-2024-031': {
+    title: 'SIN-2024-031 · Incendio',
+    rows: [
+      ['Asegurado', 'El Trebol SA'],
+      ['Cultivo', 'Soja — siembra directa'],
+      ['Superficie', '1.240 ha'],
+      ['Zona', 'Córdoba Norte · lote 7B'],
+      ['Fecha denuncia', '14/03/2025'],
+      ['Estado', '<span class="det-tag ba">En análisis SAR</span>'],
+      ['NDVI pre-evento', '0.68 (normal)'],
+      ['NDVI post-evento', '0.12 (crítico)'],
+      ['Área afectada estimada', '847 ha (68%)'],
+      ['Drone programado', 'Sí · 16/03/2025'],
+    ],
+    damage: 68,
+    damageColor: '#A32D2D',
+    actions: ['Generar informe PDF', 'Asignar liquidador']
+  },
+  'SIN-2024-029': {
+    title: 'SIN-2024-029 · Sequía',
+    rows: [
+      ['Asegurado', 'Los Algarrobos SRL'],
+      ['Cultivo', 'Maíz — campaña 2024/25'],
+      ['Superficie', '3.800 ha'],
+      ['Zona', 'Santa Fe Sur · Zona 3'],
+      ['Fecha denuncia', '10/03/2025'],
+      ['Estado', '<span class="det-tag bp">Pendiente análisis</span>'],
+      ['NDVI promedio', '0.31 (bajo umbral)'],
+      ['Humedad suelo SAR', 'Déficit severo'],
+      ['Déficit hídrico', '68 días sin lluvia'],
+      ['Drone', 'No aplica (sequía)'],
+    ],
+    damage: 45,
+    damageColor: '#854F0B',
+    actions: ['Iniciar análisis SAR', 'Ver histórico SMN']
+  },
+  'SIN-2024-027': {
+    title: 'SIN-2024-027 · Granizo',
+    rows: [
+      ['Asegurado', 'Agro Don Héctor SA'],
+      ['Cultivo', 'Trigo — lote 3'],
+      ['Superficie', '480 ha'],
+      ['Zona', 'Buenos Aires · Pergamino'],
+      ['Fecha denuncia', '02/03/2025'],
+      ['Estado', '<span class="det-tag bv">Verificado ✓</span>'],
+      ['NDVI post-evento', '0.24 (daño moderado)'],
+      ['Área afectada', '310 ha (64%)'],
+      ['Drone realizado', 'Sí · 04/03/2025'],
+      ['Informe', 'Firmado y enviado'],
+    ],
+    damage: 64,
+    damageColor: 'var(--blue)',
+    actions: ['Descargar informe PDF', 'Ver mosaico drone']
+  }
+};
+
+let activeSin = null;
+
+function selectSiniestro(id) {
+  if (activeSin) {
+    const prev = document.getElementById('si-' + activeSin.split('-')[2]);
+    if (prev) prev.classList.remove('active');
+  }
+  activeSin = id;
+  const shortId = id.split('-')[2];
+  const el = document.getElementById('si-' + shortId);
+  if (el) el.classList.add('active');
+
+  const s = siniestros[id];
+  document.getElementById('det-title').textContent = s.title;
+
+  let html = '';
+  s.rows.forEach(([k, v]) => {
+    html += `<div class="det-row"><span class="det-key">${k}</span><span class="det-val">${v}</span></div>`;
+  });
+  document.getElementById('det-body').innerHTML = html;
+
+  const detCard = document.getElementById('detail-panel');
+  detCard.innerHTML = `
+    <div class="panel-hdr">
+      <div class="panel-title">${s.title}</div>
+    </div>
+    <div class="detail-body">${html}</div>
+    <div class="progress-section">
+      <div class="prog-label">Superficie estimada afectada</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">
+        <span style="color:#8A8A8A">0%</span><span style="color:#1A1A1A;font-weight:700">${s.damage}%</span><span style="color:#8A8A8A">100%</span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" style="width:${s.damage}%;background:${s.damageColor}"></div></div>
+    </div>
+    <div class="action-row">
+      <button class="act-btn act-primary" onclick="alert('En la versión productiva: ${s.actions[0]}')">${s.actions[0]}</button>
+      <button class="act-btn act-secondary" onclick="alert('En la versión productiva: ${s.actions[1]}')">${s.actions[1]}</button>
+    </div>
+  `;
+}
+
+function setView(v) {
+  document.querySelectorAll('.sb-item').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  const titles = {cartera:'Cartera — Campaña 2024/25', siniestros:'Siniestros activos', alertas:'Alertas y monitoreo', ndvi:'NDVI y análisis SAR'};
+  document.getElementById('topbar-title').textContent = titles[v] || v;
+}
+
+// Auto-select first on load
+setTimeout(() => selectSiniestro('SIN-2024-031'), 300);
+</script>
+
+</body>
+</html>
