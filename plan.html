@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css">
   <style>
     .hero-plan { background: var(--gray-900); color: #fff; padding: 3.5rem 0 3rem; }
-    .hero-plan p { color: #aaa; }
     .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue-bright); margin-bottom: 0.5rem; display: block; }
     .toc { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin: 2rem 0; }
     .toc-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 0.75rem; }
@@ -36,12 +35,67 @@
     .kpi-item { background: var(--surface); border-radius: var(--radius-sm); padding: 0.75rem 1rem; font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
     .kpi-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
     .warn-box { background: #FFFBF0; border: 1px solid #F5D78A; border-radius: var(--radius-md); padding: 1rem 1.25rem; font-size: 13px; color: #6B4A00; margin: 1rem 0; }
-    .warn-box strong { color: #5a3a00; }
     .danger-box { background: var(--red-50); border: 1px solid #F7C1C1; border-radius: var(--radius-md); padding: 1rem 1.25rem; font-size: 13px; color: #7A2020; margin: 1rem 0; }
     .info-box { background: var(--blue-50); border: 1px solid var(--blue-100); border-radius: var(--radius-md); padding: 1rem 1.25rem; font-size: 13px; color: var(--blue); margin: 1rem 0; }
     .critical-note { background: #FFF8E1; border-left: 4px solid #F5A623; padding: 1rem 1.25rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 13px; color: var(--text-secondary); margin: 1rem 0; line-height: 1.6; }
     .cta-links { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
-    @media (max-width: 768px) { .roadmap-row { grid-template-columns: 1fr; } .cost-table-section { grid-template-columns: 1fr; } .kpi-grid { grid-template-columns: 1fr 1fr; } .toc-list { grid-template-columns: 1fr; } }
+
+    /* Poliza cards */
+    .poliza-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 1rem; }
+    .poliza-card { border-radius: var(--radius-md); border: 1px solid var(--border); overflow: hidden; }
+    .poliza-header { padding: 0.85rem 1rem; font-size: 13px; font-weight: 700; color: #fff; }
+    .poliza-header.tipo1 { background: var(--blue); }
+    .poliza-header.tipo2 { background: var(--green); }
+    .poliza-header.tipo3 { background: #7C3AED; }
+    .poliza-body { padding: 1rem; font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
+    .poliza-body strong { color: var(--text); display: block; margin-top: 0.5rem; margin-bottom: 2px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .poliza-role { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 10px; display: inline-block; margin-top: 0.75rem; }
+    .role-blue { background: var(--blue-50); color: var(--blue); }
+    .role-green { background: var(--green-50); color: var(--green-600); }
+    .role-purple { background: #EDE9FE; color: #5B21B6; }
+
+    /* Formula box */
+    .formula-box { background: var(--gray-900); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 13px; color: #E2E8F0; line-height: 1.9; }
+    .formula-box .comment { color: #64748B; }
+    .formula-box .highlight { color: #7DD3FC; font-weight: 600; }
+    .formula-box .result { color: #86EFAC; font-weight: 600; }
+
+    /* Fenologia table */
+    .fenol-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 0.5rem; }
+    .fenol-table th { background: var(--surface); font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; color: var(--text-muted); }
+    .fenol-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); }
+    .fenol-table tr:last-child td { border-bottom: none; }
+    .fenol-table tr:hover td { background: var(--surface); }
+    .damage-chip { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+    .d-low  { background: #DCFCE7; color: #166534; }
+    .d-mid  { background: #FEF3C7; color: #92400E; }
+    .d-high { background: #FEE2E2; color: #991B1B; }
+    .d-crit { background: #4C0519; color: #FDA4AF; }
+    .fenol-critical td { font-weight: 600; }
+
+    /* GEE embed section */
+    .gee-section { background: var(--gray-900); border-radius: var(--radius-lg); overflow: hidden; margin-top: 1rem; }
+    .gee-topbar { background: #1a2535; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #2d3a4a; }
+    .gee-dots { display: flex; gap: 6px; }
+    .gee-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .gee-title { font-size: 12px; color: #8A9BB0; font-family: monospace; }
+    .gee-iframe-wrap { position: relative; width: 100%; padding-bottom: 58%; background: #0d1520; }
+    .gee-iframe-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .gee-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; }
+    .gee-placeholder-icon { font-size: 3rem; }
+    .gee-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 1rem; }
+    .gee-step { background: var(--surface); border-radius: var(--radius-md); padding: 1rem; border: 1px solid var(--border); }
+    .gee-step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
+    .gee-step h5 { font-size: 13px; margin-bottom: 0.25rem; }
+    .gee-step p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+    .code-inline { font-family: monospace; font-size: 12px; background: var(--surface); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; color: var(--blue); }
+
+    @media (max-width: 768px) {
+      .roadmap-row, .poliza-grid, .gee-steps { grid-template-columns: 1fr; }
+      .cost-table-section { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .toc-list { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -49,14 +103,14 @@
 <nav class="topnav">
   <div class="topnav-inner">
     <a href="index.html" class="logo-mark">
-      <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 7v9c0 6.6 5.1 12.8 12 14.3C22.9 28.8 28 22.6 28 16V7L16 2z" fill="#1A4F8A" opacity="0.12"/><path d="M16 2L4 7v9c0 6.6 5.1 12.8 12 14.3C22.9 28.8 28 22.6 28 16V7L16 2z" fill="none" stroke="#1A4F8A" stroke-width="1.5"/><path d="M9 18c2-3 4-5 7-5s5 2 7 5" stroke="#2A7A2A" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="16" cy="11" r="2" fill="#F5A623"/><ellipse cx="16" cy="17" rx="10" ry="2.5" fill="none" stroke="#3BA0D8" stroke-width="1" opacity="0.6"/><path d="M13 14.5l1-2 1 1 1-1.5 1 2" fill="none" stroke="#1A4F8A" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 7v9c0 6.6 5.1 12.8 12 14.3C22.9 28.8 28 22.6 28 16V7L16 2z" fill="#1A4F8A" opacity="0.12"/><path d="M16 2L4 7v9c0 6.6 5.1 12.8 12 14.3C22.9 28.8 28 22.6 28 16V7L16 2z" fill="none" stroke="#1A4F8A" stroke-width="1.5"/><path d="M9 18c2-3 4-5 7-5s5 2 7 5" stroke="#2A7A2A" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="16" cy="11" r="2" fill="#F5A623"/><ellipse cx="16" cy="17" rx="10" ry="2.5" fill="none" stroke="#3BA0D8" stroke-width="1" opacity="0.6"/></svg>
       <div class="logo-wordmark"><span class="ag">Ag</span><span class="sure">Sure</span><span class="dot">.</span><span class="ai">ai</span></div>
     </a>
     <div class="nav-links">
       <a href="index.html" class="nav-link">Inicio</a>
       <a href="plan.html" class="nav-link active">Plan</a>
       <a href="landing.html" class="nav-link">Landing</a>
-      <a href="dashboard.html" class="nav-link">Dashboard</div>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
     </div>
     <a href="landing.html#contacto" class="nav-cta">Ver propuesta →</a>
   </div>
@@ -64,12 +118,12 @@
 
 <div class="hero-plan">
   <div class="container">
-    <span style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue-bright)">Documento de trabajo — Mayo 2026</span>
+    <span style="font-size:11px;font-weight:600;text-transform:uppercase;color:var(--blue-bright)">Documento de trabajo — Mayo 2026</span>
     <h1 style="color:#fff; margin:0.5rem 0">Plan de Negocios</h1>
-    <p style="font-size:1rem; max-width:620px">AgSure.ai — plataforma de verificación de siniestros agropecuarios con sensoramiento remoto. Visión crítica y realista para análisis interno.</p>
+    <p style="font-size:1rem; max-width:620px; color:#aaa">AgSure.ai — plataforma de verificación de siniestros agropecuarios con sensoramiento remoto. Visión crítica y realista para análisis interno.</p>
     <div style="display:flex; gap:0.75rem; margin-top:1.25rem; flex-wrap:wrap">
       <span class="badge badge-blue">Matías + Martín</span>
-      <span class="badge badge-gray">Borrador v1.0 · Mayo 2026</span>
+      <span class="badge badge-gray">Borrador v1.1 · Mayo 2026</span>
     </div>
   </div>
 </div>
@@ -80,32 +134,30 @@
     <div class="toc-title">Índice</div>
     <ul class="toc-list">
       <li><a href="#resumen">1. Resumen y diagnóstico</a></li>
-      <li><a href="#mercado">4. Mercado y volumen USD</a></li>
+      <li><a href="#polizas">6. Anatomía de las pólizas</a></li>
       <li><a href="#problema">2. El problema real</a></li>
-      <li><a href="#jugadores">5. Jugadores y competencia</a></li>
+      <li><a href="#merma">7. De daño SAR a merma de producción</a></li>
       <li><a href="#solucion">3. La propuesta</a></li>
-      <li><a href="#foda">6. FODA — sin maquillar</a></li>
-      <li><a href="#modelo">7. Modelo de negocio</a></li>
-      <li><a href="#costos">8. Costos y viabilidad</a></li>
-      <li><a href="#roadmap">9. Roadmap</a></li>
-      <li><a href="#riesgos">10. Riesgos críticos</a></li>
+      <li><a href="#modelo">8. Modelo de negocio</a></li>
+      <li><a href="#mercado">4. Mercado y volumen USD</a></li>
+      <li><a href="#costos">9. Costos y viabilidad</a></li>
+      <li><a href="#foda">5. FODA sin maquillar</a></li>
+      <li><a href="#roadmap">10. Roadmap y riesgos</a></li>
+      <li><a href="#plataforma">11. Plataforma GEE — demo</a></li>
+      <li><a href="#kpis">12. KPIs</a></li>
     </ul>
   </div>
 
-  <!-- 1. RESUMEN CRITICO -->
+  <!-- 1. RESUMEN -->
   <div class="section-sm" id="resumen">
     <span class="section-label">1 — Resumen y diagnóstico</span>
     <h2 class="mb-3">La idea tiene mérito técnico. La viabilidad comercial requiere trabajo.</h2>
-    <p style="font-size:1rem; max-width:800px; line-height:1.8" class="mb-3">
-      La combinación de SAR + óptico satelital + drones aplicada a siniestros agropecuarios es técnicamente sólida y no tiene un competidor local directo. Pero el mercado de seguros agropecuarios en Argentina tiene características que hacen el camino más difícil de lo que parece: concentración extrema (3 aseguradoras con más del 50%), ciclos de venta institucionales largos, alta resistencia cultural al cambio en el peritaje, y un esquema regulatorio que obliga a que el informe final sea firmado por un liquidador matriculado SSN — rol que ninguno de los dos socios tiene hoy.
-    </p>
-
+    <p style="font-size:1rem; max-width:800px; line-height:1.8" class="mb-3">La combinación de SAR + óptico satelital + drones aplicada a siniestros agropecuarios es técnicamente sólida y no tiene un competidor local directo. Pero el mercado tiene barreras que hacen el camino más difícil de lo que parece: concentración extrema (3 aseguradoras con más del 50%), ciclos de venta institucionales largos, y un esquema regulatorio que obliga a que el informe final sea firmado por un liquidador matriculado SSN.</p>
     <div class="danger-box">
-      <strong>El riesgo principal no es técnico.</strong> Es comercial y regulatorio. Sin matrícula de liquidador SSN, los informes de AgSure.ai tienen valor de referencia pero no pueden reemplazar formalmente al peritaje. Sin al menos un cliente piloto comprometido, el MVP corre el riesgo de ser un producto sin mercado validado.
+      <strong>El riesgo principal no es técnico.</strong> Es comercial y regulatorio. Sin matrícula de liquidador SSN, los informes son referenciales. Sin al menos un cliente piloto comprometido, el MVP corre el riesgo de ser un producto sin mercado validado.
     </div>
-
     <div class="warn-box mt-2">
-      <strong>Lo que este plan no sabe con certeza:</strong> (1) si las aseguradoras están dispuestas a pagar por esto, y a cuánto; (2) si el granizo — que es el 99% del mercado — es verificable remotamente con la precisión que necesitan; (3) cuánto tiempo lleva realmente cerrar un contrato con una corporativa del sector. Estas tres incertidumbres son las que hay que resolver antes de invertir capital significativo.
+      <strong>Lo que este plan no sabe con certeza:</strong> (1) si las aseguradoras pagarían por esto y a cuánto; (2) si el granizo — que es el 99% del mercado — es verificable remotamente con la precisión que necesitan; (3) cuánto tiempo lleva cerrar un contrato con una corporativa del sector. Estas tres incertidumbres son las que hay que resolver antes de invertir capital significativo.
     </div>
   </div>
 
@@ -114,37 +166,33 @@
   <!-- 2. PROBLEMA -->
   <div class="section-sm" id="problema">
     <span class="section-label">2 — El problema real</span>
-    <h2 class="mb-3">El peritaje presencial es ineficiente. Pero no todo lo ineficiente es reemplazable.</h2>
-
+    <h2 class="mb-3">El peritaje presencial es ineficiente. No todo es reemplazable.</h2>
     <div class="grid-2 mt-3">
       <div>
-        <h4 class="mb-2">Problemas reales del sistema actual</h4>
+        <h4 class="mb-2">Problemas del sistema actual</h4>
         <table>
           <thead><tr><th>Problema</th><th>Impacto</th></tr></thead>
           <tbody>
-            <tr><td>Peritaje presencial lento</td><td>5–15 días hábiles, costos de traslado</td></tr>
+            <tr><td>Peritaje 100% presencial</td><td>5–15 días hábiles, costos de traslado altos</td></tr>
             <tr><td>Sin imagen pre-siniestro sistemática</td><td>Imposible comparar sin contexto histórico</td></tr>
             <tr><td>Escala imposible en eventos masivos</td><td>Inundaciones y granizo regional colapsan el sistema</td></tr>
-            <tr><td>Fraude difícil de detectar</td><td>8–12% de siniestros con irregularidades estimadas</td></tr>
-            <tr><td>Cartera sin visión geoespacial</td><td>Las aseguradoras no conocen su exposición por zona</td></tr>
+            <tr><td>Fraude difícil de detectar</td><td>8–12% de siniestros con irregularidades</td></tr>
+            <tr><td>Sin visión geoespacial de cartera</td><td>Las aseguradoras no conocen su exposición por zona</td></tr>
           </tbody>
         </table>
       </div>
       <div>
-        <h4 class="mb-2" style="color:var(--earth)">Limitaciones técnicas que hay que reconocer</h4>
+        <h4 class="mb-2" style="color:var(--earth)">Limitaciones técnicas — honestidad necesaria</h4>
         <table>
-          <thead><tr><th>Siniestro</th><th>Problema con teledetección</th></tr></thead>
+          <thead><tr><th>Siniestro</th><th>Detección remota</th></tr></thead>
           <tbody>
-            <tr><td><strong>Granizo</strong> (60–70% del mercado)</td><td style="color:var(--red)">El daño mecánico hoja a hoja NO se ve desde satélite. El drone ayuda pero requiere vuelo presencial el mismo día o al siguiente, antes de que el cultivo se recupere parcialmente.</td></tr>
-            <tr><td>Sequía / Déficit hídrico</td><td style="color:var(--green-600)">Sí verificable: SAR + NDVI funciona bien.</td></tr>
-            <tr><td>Inundación</td><td style="color:var(--green-600)">Sí verificable: SAR es ideal, independiente de nubes.</td></tr>
-            <tr><td>Incendio</td><td style="color:var(--green-600)">Sí verificable: detección de área quemada muy precisa.</td></tr>
-            <tr><td>Enfermedades / Plagas</td><td style="color:var(--earth)">Parcialmente: drone multiespectral ayuda, pero necesita agrónomo para interpretar.</td></tr>
+            <tr><td><strong>Granizo</strong> (99% del mercado)</td><td><span class="damage-chip d-mid">Parcial</span> Daño mecánico foliar no visible desde satélite. El drone cierra el círculo pero requiere vuelo en 24–48hs.</td></tr>
+            <tr><td>Sequía / Déficit hídrico</td><td><span class="damage-chip d-low">Sí</span> SAR + NDVI funciona muy bien.</td></tr>
+            <tr><td>Inundación</td><td><span class="damage-chip d-low">Sí</span> SAR es ideal, penetra nubes.</td></tr>
+            <tr><td>Incendio</td><td><span class="damage-chip d-low">Sí</span> Área quemada muy precisa.</td></tr>
+            <tr><td>Enfermedades / Plagas</td><td><span class="damage-chip d-mid">Parcial</span> Drone multiespectral + agrónomo.</td></tr>
           </tbody>
         </table>
-        <div class="warn-box mt-2">
-          <strong>El granizo es el 99% del mercado y es el caso más difícil para la teledetección.</strong> El producto tiene que tener una respuesta concreta para esto, no esquivarlo.
-        </div>
       </div>
     </div>
   </div>
@@ -157,25 +205,17 @@
     <h2 class="mb-3">Dos productos con distintos perfiles de riesgo comercial</h2>
     <div class="grid-2 mt-3">
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem">
-          <h4>Plataforma SaaS de cartera</h4>
-          <span class="badge badge-green">Más viable</span>
-        </div>
-        <p style="font-size:13px;line-height:1.6">Visualización geoespacial de hectáreas aseguradas, monitoreo NDVI, alertas de estrés hídrico. <strong>No requiere matrícula SSN.</strong> Valor claro para gerencias técnicas y de riesgo. El argumento de venta es gestión de cartera, no reemplazo del liquidador.</p>
-        <div class="info-box mt-2" style="font-size:12px">Este módulo puede venderse solo, sin necesitar el servicio de verificación de siniestros. Es una entrada más limpia al mercado.</div>
+        <div class="flex-between mb-2"><h4>Plataforma SaaS de cartera</h4><span class="badge badge-green">Más viable</span></div>
+        <p style="font-size:13px;line-height:1.6">Visualización geoespacial, monitoreo NDVI, alertas. <strong>No requiere matrícula SSN.</strong> Argumento de venta: gestión de cartera y reducción de fraude, no reemplazo del liquidador.</p>
+        <div class="info-box mt-2" style="font-size:12px">Este módulo puede venderse solo. Es la entrada más limpia al mercado y genera ARR desde el inicio.</div>
       </div>
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem">
-          <h4>Verificación de siniestros por evento</h4>
-          <span class="badge badge-amber">Más complejo</span>
-        </div>
-        <p style="font-size:13px;line-height:1.6">Informe técnico satelital + drone por siniestro denunciado. <strong>Requiere que Martín obtenga matrícula SSN</strong> (examen escrito + oral ante la SSN) para que el informe tenga validez formal. Sin matrícula, el informe es un complemento, no una liquidación.</p>
-        <div class="warn-box mt-2" style="font-size:12px">El granizo es el caso más demandado y el más difícil. Hay que tener una respuesta clara: el drone confirma o niega daño, pero el perito humano sigue siendo necesario para medir el porcentaje exacto.</div>
+        <div class="flex-between mb-2"><h4>Verificación de siniestros por evento</h4><span class="badge badge-amber">Requiere matrícula</span></div>
+        <p style="font-size:13px;line-height:1.6">Informe técnico satelital + drone por siniestro. <strong>Requiere matrícula SSN de Martín</strong> para validez formal. Sin matrícula, el informe es complemento, no liquidación.</p>
+        <div class="warn-box mt-2" style="font-size:12px">El granizo es el caso más demandado y el más difícil. El drone confirma el daño pero el perito sigue siendo necesario para tasación exacta en muchos casos.</div>
       </div>
     </div>
-    <div class="critical-note mt-3">
-      <strong>Recomendación de secuencia:</strong> Arrancar vendiendo la plataforma SaaS de cartera como producto independiente. Es más fácil de vender, no requiere matrícula, y genera ingresos recurrentes mientras Martín obtiene la matrícula y se construye credibilidad en el rubro. El servicio de verificación de siniestros es el producto de largo plazo.
-    </div>
+    <div class="critical-note mt-3"><strong>Secuencia recomendada:</strong> Arrancar con el SaaS de cartera. Más fácil de vender, no requiere matrícula, genera ingresos recurrentes mientras Martín obtiene la matrícula y se construye credibilidad.</div>
   </div>
 
   <hr class="divider">
@@ -183,140 +223,68 @@
   <!-- 4. MERCADO -->
   <div class="section-sm" id="mercado">
     <span class="section-label">4 — Mercado y volumen en USD</span>
-    <h2 class="mb-3">Mercado acotado, volátil, y dominado por 3 jugadores</h2>
-
+    <h2 class="mb-3">Mercado acotado, volátil, dominado por 3 jugadores</h2>
     <div class="grid-4 mt-3 mb-4">
-      <div class="metric-card">
-        <div class="metric-label">Primas anuales Argentina</div>
-        <div class="metric-value">~$347<span>M USD</span></div>
-        <div class="metric-delta delta-neg">−24,5% real vs año anterior</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Siniestros pagados</div>
-        <div class="metric-value">~$264<span>M USD</span></div>
-        <div class="metric-delta delta-warn">siniestralidad 72,9%</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Hectáreas aseguradas</div>
-        <div class="metric-value">18<span>M ha</span></div>
-        <div class="metric-delta delta-neg">cayó de 23,5M en 2024</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Pólizas por campaña</div>
-        <div class="metric-value">~175<span>K</span></div>
-        <div class="metric-delta">datos SSN 2024-25</div>
-      </div>
+      <div class="metric-card"><div class="metric-label">Primas anuales Argentina</div><div class="metric-value">~$347<span>M USD</span></div><div class="metric-delta delta-neg">−24,5% real vs. año anterior</div></div>
+      <div class="metric-card"><div class="metric-label">Siniestros pagados</div><div class="metric-value">~$264<span>M USD</span></div><div class="metric-delta delta-warn">siniestralidad 72,9%</div></div>
+      <div class="metric-card"><div class="metric-label">Hectáreas aseguradas</div><div class="metric-value">18<span>M ha</span></div><div class="metric-delta delta-neg">cayó de 23,5M en 2024</div></div>
+      <div class="metric-card"><div class="metric-label">Pólizas por campaña</div><div class="metric-value">~175<span>K</span></div><div class="metric-delta">datos SSN 2024-25</div></div>
     </div>
-
-    <div class="warn-box mb-3">
-      <strong>El mercado cayó un 24,5% en términos reales en 2024-25 y perdió 5,5 millones de hectáreas aseguradas en un año.</strong> Esto no invalida la oportunidad, pero sí muestra que el mercado es volátil y que las aseguradoras están bajo presión financiera — lo que puede tanto abrir puertas (necesitan bajar costos) como cerrarlas (no quieren invertir en herramientas nuevas).
-    </div>
-
-    <h3 class="mb-2">Estimación del mercado direccionable</h3>
-    <table class="mb-4">
-      <thead><tr><th>Segmento</th><th>Base de cálculo</th><th>TAM</th><th>SAM realista</th><th>SOM año 3 (conservador)</th></tr></thead>
+    <table class="mb-3">
+      <thead><tr><th>Segmento</th><th>TAM</th><th>SAM realista</th><th>SOM año 3 (conservador)</th></tr></thead>
       <tbody>
-        <tr><td><strong>SaaS — suscripción/ha/año</strong></td><td>USD 1/ha sobre 18M ha</td><td>USD 18M/año</td><td>USD 3–5M (top 5 aseg.)</td><td>USD 200K–800K ARR</td></tr>
-        <tr><td><strong>Fee por verificación</strong></td><td>5–10% de $264M siniestros</td><td>USD 13–26M/año</td><td>USD 1–3M (top 5)</td><td>USD 30K–150K/año</td></tr>
+        <tr><td><strong>SaaS — suscripción/ha/año</strong></td><td>USD 18M/año</td><td>USD 3–5M (top 5 aseg.)</td><td>USD 200K–800K ARR</td></tr>
+        <tr><td><strong>Fee por verificación</strong></td><td>USD 13–26M/año</td><td>USD 1–3M</td><td>USD 30K–150K/año</td></tr>
       </tbody>
     </table>
-
-    <div class="critical-note">
-      <strong>Los números del TAM son llamativos pero engañosos.</strong> El SAM real (lo que se puede vender en los próximos 3 años con un equipo de dos personas) es mucho más chico. Una estimación honesta del SOM a 3 años es USD 200K–800K ARR en suscripciones si se logran 2–3 aseguradoras medianas. No es un mal número para un negocio de dos personas, pero tampoco es el negocio de millones que prometen los TAMs inflados.
-    </div>
-
-    <h3 class="mb-2 mt-3">Concentración geográfica</h3>
-    <div class="card-surface">
-      <div style="display:flex; flex-direction:column; gap:8px">
-        <div><div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:3px"><span>Buenos Aires</span><span style="color:var(--text-muted)">36,7%</span></div><div class="progress-bar-track"><div class="progress-bar-fill" style="width:36.7%"></div></div></div>
-        <div><div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:3px"><span>Córdoba</span><span style="color:var(--text-muted)">31%</span></div><div class="progress-bar-track"><div class="progress-bar-fill" style="width:31%"></div></div></div>
-        <div><div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:3px"><span>Santa Fe</span><span style="color:var(--text-muted)">20%</span></div><div class="progress-bar-track"><div class="progress-bar-fill" style="width:20%"></div></div></div>
-        <div><div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:3px"><span>Resto</span><span style="color:var(--text-muted)">12,3%</span></div><div class="progress-bar-track"><div class="progress-bar-fill" style="width:12.3%; background:var(--gray-200)"></div></div></div>
-      </div>
-    </div>
+    <div class="critical-note">El SOM honesto a 3 años es USD 200K–800K ARR. No millones. Con un equipo de dos personas y ciclos de venta corporativos, eso es realista y no es un mal número.</div>
   </div>
 
   <hr class="divider">
 
-  <!-- 5. JUGADORES -->
-  <div class="section-sm" id="jugadores">
-    <span class="section-label">5 — Jugadores y competencia</span>
-    <h2 class="mb-3">Las aseguradoras son el cliente y el guardián al mismo tiempo</h2>
-    <div class="grid-2 mt-3">
-      <div>
-        <h4 class="mb-2">Aseguradoras — target</h4>
-        <div class="card">
-          <div class="competitor-row"><span style="font-size:13px;min-width:160px">La Segunda</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span style="font-size:12px;color:var(--text-muted)">~20%</span></div>
-          <div class="competitor-row"><span style="font-size:13px;min-width:160px">Sancor Seguros</span><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div><span style="font-size:12px;color:var(--text-muted)">~18%</span></div>
-          <div class="competitor-row"><span style="font-size:13px;min-width:160px">Allianz Argentina</span><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div><span style="font-size:12px;color:var(--text-muted)">~14%</span></div>
-          <div class="competitor-row"><span style="font-size:13px;min-width:160px">Mapfre / Zurich</span><div class="bar-track"><div class="bar-fill" style="width:50%"></div></div><span style="font-size:12px;color:var(--text-muted)">~10%</span></div>
-          <div class="competitor-row"><span style="font-size:13px;min-width:160px">Resto top 10</span><div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--gray-200)"></div></div><span style="font-size:12px;color:var(--text-muted)">~38%</span></div>
-        </div>
-        <div class="warn-box mt-2">Con solo 36 aseguradoras en el ramo y 3 con el 52% del mercado, perder el proceso de decisión de una sola corporativa grande retrasa el negocio entre 12 y 24 meses.</div>
-      </div>
-      <div>
-        <h4 class="mb-2">Competencia directa — realidad</h4>
-        <table>
-          <thead><tr><th>Competidor</th><th>Amenaza real</th></tr></thead>
-          <tbody>
-            <tr><td><strong>EOSDA (global)</strong></td><td>Tienen el producto. No están focalizados en Argentina. Si alguien los referencia, el ciclo de evaluación se complica.</td></tr>
-            <tr><td><strong>Liquidadores tradicionales</strong></td><td>No son competidores directos pero sí actores de influencia. Pueden bloquear la adopción si se sienten amenazados.</td></tr>
-            <tr><td><strong>GIS interno de aseguradoras</strong></td><td>Algunas aseguradoras grandes pueden decidir desarrollar inhouse si el mercado madura.</td></tr>
-            <tr><td><strong>Agtech (Auravant, etc.)</strong></td><td>No están en seguros hoy, pero el pivot es fácil para ellos si ven la oportunidad.</td></tr>
-          </tbody>
-        </table>
-        <div class="info-box mt-2">La ventaja competitiva real de AgSure.ai no es la tecnología — esa es replicable. Es la combinación tech + conocimiento del mercado local de seguros (Martín) + matrícula de liquidador. Sin los tres, el diferencial se debilita.</div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="divider">
-
-  <!-- 6. FODA -->
+  <!-- 5. FODA -->
   <div class="section-sm" id="foda">
-    <span class="section-label">6 — FODA sin maquillar</span>
+    <span class="section-label">5 — FODA sin maquillar</span>
     <h2 class="mb-3">La foto real, con los claroscuros</h2>
     <div class="foda-grid mt-3">
       <div class="foda-card foda-f">
         <div class="foda-title">Fortalezas reales</div>
         <ul class="foda-list">
-          <li>Expertise en SAR + óptico + drones — genuinamente escaso en el mercado asegurador local</li>
-          <li>15 años de red y comprensión del sector seguros (Martín) — esto abre puertas</li>
-          <li>Capacidad de construir el MVP sin depender de terceros (stack propio)</li>
-          <li>Sentinel-1/2 gratuito vía ESA → costo de datos bajo, barrera de entrada razonable</li>
-          <li>No hay competidor local establecido con esta propuesta específica</li>
+          <li>Expertise SAR + óptico + drones — escaso en el mercado asegurador local</li>
+          <li>15 años de red en seguros (Martín)</li>
+          <li>Stack full-stack propio — sin dependencia de terceros para el MVP</li>
+          <li>Sentinel-1/2 gratuito (ESA) → costo de datos bajo</li>
+          <li>Sin competidor directo local con esta propuesta específica</li>
         </ul>
       </div>
       <div class="foda-card foda-o">
         <div class="foda-title">Oportunidades concretas</div>
         <ul class="foda-list">
-          <li>Siniestralidad >70% presiona a las aseguradoras a reducir costos de verificación</li>
-          <li>Los seguros multirriesgo y paramétricos crecen y necesitan más datos objetivos</li>
-          <li>Las reaseguradoras internacionales (Munich Re, Swiss Re) ya usan estas herramientas globalmente — pueden ser el puente</li>
-          <li>Expansión regional (Brasil, Paraguay, Uruguay) si se valida el modelo en Argentina</li>
-          <li>El granizo masivo y las inundaciones son exactamente donde el sistema tradicional colapsa</li>
+          <li>Siniestralidad >70% presiona a reducir costos de verificación</li>
+          <li>Seguros multirriesgo y paramétricos en crecimiento</li>
+          <li>Reaseguradoras internacionales ya usan estas herramientas globalmente</li>
+          <li>Expansión regional: Brasil, Paraguay, Uruguay</li>
+          <li>Cambio climático → mayor frecuencia de eventos extremos</li>
         </ul>
       </div>
       <div class="foda-card foda-d">
         <div class="foda-title">Debilidades reales</div>
         <ul class="foda-list">
-          <li><strong>Sin matrícula SSN hoy</strong> — los informes son referenciales, no reemplazan la liquidación formal</li>
-          <li>Sin track record en seguros agropecuarios — nadie va a ser el primero sin evidencia</li>
+          <li>Sin matrícula SSN hoy — informes son referenciales</li>
           <li>El granizo (99% del mercado) es el caso más difícil para la teledetección</li>
-          <li>Equipo de dos personas: riesgo operativo alto si entra trabajo real</li>
-          <li>Sin capital externo, el crecimiento depende de los ingresos — ciclo lento</li>
-          <li>Ninguno de los dos tiene experiencia vendiendo a corporativas del sector asegurador</li>
+          <li>Sin track record en seguros agropecuarios específicamente</li>
+          <li>Equipo de dos personas — riesgo operativo alto</li>
+          <li>Sin capital externo — crecimiento depende de ingresos</li>
         </ul>
       </div>
       <div class="foda-card foda-a">
         <div class="foda-title">Amenazas que importan</div>
         <ul class="foda-list">
-          <li>Las aseguradoras son instituciones conservadoras — el ciclo de ventas puede ser de 12–24 meses por cliente</li>
-          <li>Volatilidad macro: el mercado cayó 24,5% en términos reales en el último ejercicio</li>
-          <li>Si una aseguradora grande contrata EOSDA directamente, el diferencial local desaparece rápido</li>
-          <li>Los liquidadores matriculados tienen incentivos para resistir la adopción tecnológica</li>
-          <li>Un cambio regulatorio en SSN podría tanto abrir como cerrar el modelo</li>
-          <li>El tipo de cambio hace que los costos en USD y los ingresos en pesos sean difíciles de gestionar</li>
+          <li>Ciclos de venta de 12–24 meses con corporativas</li>
+          <li>Mercado cayó 24,5% real en el último ejercicio</li>
+          <li>Aseguradora grande que contrate EOSDA directamente</li>
+          <li>Resistencia de liquidadores tradicionales</li>
+          <li>Tipo de cambio: costos en USD, ingresos en pesos</li>
         </ul>
       </div>
     </div>
@@ -324,62 +292,209 @@
 
   <hr class="divider">
 
-  <!-- 7. MODELO -->
+  <!-- 6. POLIZAS -->
+  <div class="section-sm" id="polizas">
+    <span class="section-label">6 — Anatomía de las pólizas agropecuarias</span>
+    <h2 class="mb-3">Tres tipos de póliza, tres mecánicas de liquidación distintas</h2>
+    <p class="mb-3" style="max-width:780px">Entender cómo opera cada póliza es crítico para diseñar el producto correcto. El rol de AgSure.ai es diferente en cada caso.</p>
+
+    <div class="poliza-grid">
+
+      <div class="poliza-card">
+        <div class="poliza-header tipo1">Tipo 1 — Granizo puro<br><span style="font-size:11px;font-weight:400;opacity:0.85">~70% del mercado · Art. 91-96 Ley 17418</span></div>
+        <div class="poliza-body">
+          <strong>Qué cubre</strong>
+          Daño físico directo del granizo sobre cultivos arraigados. Solo pérdidas en cantidad, no en calidad. Granizo, incendio (80% SA) y resiembra (20% SA) incluidos sin costo adicional.
+          <strong>Franquicia</strong>
+          6% no deducible estándar (si el daño supera 6%, se paga desde 0%). Variantes: 5% o 10% deducible según aseguradora.
+          <strong>Cuándo se activa</strong>
+          Denuncia dentro de las 72hs del evento. El perito visita el lote en 5–15 días. Puede pagarse de forma anticipada si el daño es evidente e irreversible.
+          <strong>Cómo se calcula la indemnización</strong>
+          <span style="font-family:monospace;font-size:11px;display:block;background:var(--surface);padding:6px;border-radius:4px;margin-top:4px">SA × ha_afectadas × % daño</span>
+          <strong>Carencia</strong>
+          3 días estándar. Algunas ofrecen 0 carencia con prima adicional.
+          <span class="poliza-role role-blue">AgSure.ai: reemplaza la visita presencial del perito — entrega % daño en 48hs</span>
+        </div>
+      </div>
+
+      <div class="poliza-card">
+        <div class="poliza-header tipo2">Tipo 2 — Multiriesgo<br><span style="font-size:11px;font-weight:400;opacity:0.85">Granizo + sequía + helada + excesos hídricos</span></div>
+        <div class="poliza-body">
+          <strong>Qué cubre</strong>
+          Serie de riesgos nomenclados. Excluye enfermedades y plagas. Se fija un rendimiento de garantía pretemporada.
+          <strong>Franquicia</strong>
+          15–30% deducible sobre SA del lote afectado — mucho más alta que granizo puro.
+          <strong>Cuándo se activa</strong>
+          Solo se indemniza cuando el rinde real de cosecha cae por debajo del rendimiento de garantía. Requiere esperar resultados de cosecha, muestras testigo o pesadas oficiales.
+          <strong>Cómo se calcula</strong>
+          <span style="font-family:monospace;font-size:11px;display:block;background:var(--surface);padding:6px;border-radius:4px;margin-top:4px">(Rinde garantía − Rinde real) / Rinde garantía × SA</span>
+          <strong>Liquidación</strong>
+          Más lenta y compleja. Requiere peritos agrónomos que visiten múltiples veces durante el ciclo.
+          <span class="poliza-role role-green">AgSure.ai: monitoreo continuo NDVI durante toda la campaña — documenta objetivamente la evolución del estrés desde el evento hasta cosecha</span>
+        </div>
+      </div>
+
+      <div class="poliza-card">
+        <div class="poliza-header tipo3">Tipo 3 — Paramétrico / Índice<br><span style="font-size:11px;font-weight:400;opacity:0.85">Emergente · hoy más activo en Brasil y México</span></div>
+        <div class="poliza-body">
+          <strong>Qué cubre</strong>
+          No mide daño físico sino la caída de un índice predefinido (NDVI, lluvia acumulada, temperatura). Si el índice cruza el umbral, el pago es automático.
+          <strong>Franquicia</strong>
+          No aplica en sentido clásico. La calibración del índice determina el umbral de activación.
+          <strong>Cuándo se activa</strong>
+          Automáticamente al cruzar el umbral del índice. No requiere denuncia ni peritaje. Pago en días, no en meses.
+          <strong>Cómo se calcula</strong>
+          <span style="font-family:monospace;font-size:11px;display:block;background:var(--surface);padding:6px;border-radius:4px;margin-top:4px">SA × max(0, (Umbral − Índice) / Umbral)</span>
+          <strong>Estado en Argentina</strong>
+          Aún incipiente. Requiere calibración histórica robusta del índice. Las reaseguradoras internacionales lo empujan activamente.
+          <span class="poliza-role role-purple">AgSure.ai: puede ser el proveedor del índice — la serie temporal NDVI/SAR acumulada se convierte en el activo de datos que sostiene el producto</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Cuadro comparativo -->
+    <h3 class="mt-4 mb-2">Cuadro comparativo de ejecución</h3>
+    <table>
+      <thead><tr><th>Variable</th><th>Granizo puro</th><th>Multiriesgo</th><th>Paramétrico</th></tr></thead>
+      <tbody>
+        <tr><td>Tiempo de liquidación</td><td>Días a semanas</td><td>Meses (hasta cosecha)</td><td>Días (automático)</td></tr>
+        <tr><td>Requiere perito en campo</td><td>Sí — hoy siempre</td><td>Sí — varias visitas</td><td>No</td></tr>
+        <tr><td>Franquicia típica</td><td>6% no deducible</td><td>15–30% deducible</td><td>Calibrado en el índice</td></tr>
+        <tr><td>Base del cálculo</td><td>% daño foliar</td><td>Rinde real vs. garantía</td><td>Índice vs. umbral</td></tr>
+        <tr><td>Riesgo de fraude</td><td>Alto</td><td>Medio</td><td>Bajo (índice objetivo)</td></tr>
+        <tr><td>Rol de AgSure.ai</td><td>Reemplaza visita</td><td>Monitorea campaña</td><td>Es el índice</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 7. MERMA -->
+  <div class="section-sm" id="merma">
+    <span class="section-label">7 — De delta_CR a merma de producción</span>
+    <h2 class="mb-3">La cadena técnica: del satélite al número de la indemnización</h2>
+    <p class="mb-3" style="max-width:780px">El sistema SAR detecta cambio en la estructura del canopeo. Convertir eso en un porcentaje de merma de producción requiere tres pasos encadenados.</p>
+
+    <div class="formula-box">
+      <span class="comment"># Cadena de conversión completa</span><br><br>
+      <span class="highlight">delta_CR (dB)</span>  →  % área foliar perdida  →  % merma de rendimiento  →  <span class="result">indemnización USD</span><br><br>
+      <span class="comment"># Paso 1: SAR mide el cambio en canopeo (calibrando con drone)</span><br>
+      <span class="comment"># Paso 2: curvas fenológicas de respuesta por cultivo</span><br>
+      <span class="comment"># Paso 3: fórmula de la póliza</span><br><br>
+      Indemnización = <span class="highlight">SA</span> × ha_afectadas × max(0, <span class="highlight">%_daño</span> − franquicia)<br><br>
+      <span class="comment"># Ejemplo — Caso 1 (Laborde, soja R5, 65% daño, 200ha, USD 800/ha, franquicia 6%):</span><br>
+      <span class="result">= USD 800 × 200 × 0.65 = USD 104.000</span>
+    </div>
+
+    <!-- Tablas fenología -->
+    <div class="grid-2 mt-3">
+      <div>
+        <h4 class="mb-2">Soja — sensibilidad por estadío fenológico</h4>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Impacto estimado de un 40% de pérdida de área foliar sobre el rendimiento final.</p>
+        <table class="fenol-table">
+          <thead><tr><th>Estadío</th><th>Descripción</th><th>Merma estimada</th></tr></thead>
+          <tbody>
+            <tr><td>VE–V3</td><td>Emergencia a 3 hojas</td><td><span class="damage-chip d-low">5–10%</span></td></tr>
+            <tr><td>V4–V6</td><td>Vegetativo medio</td><td><span class="damage-chip d-low">10–20%</span></td></tr>
+            <tr><td>R1–R2</td><td>Floración</td><td><span class="damage-chip d-mid">25–40%</span></td></tr>
+            <tr><td>R3–R4</td><td>Formación de vainas</td><td><span class="damage-chip d-high">35–55%</span></td></tr>
+            <tr class="fenol-critical"><td>R5</td><td>Llenado de grano ★</td><td><span class="damage-chip d-crit">50–80%</span></td></tr>
+            <tr><td>R6–R7</td><td>Madurez fisiológica</td><td><span class="damage-chip d-low">5–15%</span></td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:6px">★ El Caso 1 (Laborde, 27 mar 2025) impactó exactamente en R5 — máxima sensibilidad.</p>
+      </div>
+      <div>
+        <h4 class="mb-2">Maíz — sensibilidad por estadío fenológico</h4>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Impacto estimado de un 40% de pérdida de área foliar sobre el rendimiento final.</p>
+        <table class="fenol-table">
+          <thead><tr><th>Estadío</th><th>Descripción</th><th>Merma estimada</th></tr></thead>
+          <tbody>
+            <tr><td>V6–V10</td><td>Vegetativo medio-tardío</td><td><span class="damage-chip d-low">10–25%</span></td></tr>
+            <tr><td>V12–V14</td><td>Pre-floración</td><td><span class="damage-chip d-mid">25–45%</span></td></tr>
+            <tr class="fenol-critical"><td>VT–R1</td><td>Floración / polinización ★</td><td><span class="damage-chip d-crit">60–90%</span></td></tr>
+            <tr><td>R2–R3</td><td>Grano lechoso-pastoso</td><td><span class="damage-chip d-high">30–60%</span></td></tr>
+            <tr><td>R4–R5</td><td>Grano dentado</td><td><span class="damage-chip d-mid">15–35%</span></td></tr>
+            <tr><td>R6</td><td>Madurez fisiológica</td><td><span class="damage-chip d-low">5–10%</span></td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:6px">★ En floración, el granizo puede destruir el 60–90% del rendimiento aunque el daño foliar visible sea moderado.</p>
+      </div>
+    </div>
+
+    <h3 class="mt-4 mb-2">Lo que esto implica para el modelo técnico</h3>
+    <div class="grid-3 mt-2">
+      <div class="card-surface">
+        <h4 style="font-size:13px" class="mb-1">Dato crítico: DOY + cultivo</h4>
+        <p style="font-size:12px;line-height:1.6">El sistema necesita saber la fecha exacta del evento (DOY) y el cultivo asegurado. Con eso puede ubicar el estadío fenológico y aplicar la curva de merma correcta. Datos que ya están en la póliza.</p>
+      </div>
+      <div class="card-surface">
+        <h4 style="font-size:13px" class="mb-1">El drone como calibrador</h4>
+        <p style="font-size:12px;line-height:1.6">Cada vuelo genera un par (delta_CR_SAR, % daño_real_drone). Con 200–300 casos el modelo satelital se calibra al punto donde el drone solo se necesita en casos de alta incertidumbre.</p>
+      </div>
+      <div class="card-surface">
+        <h4 style="font-size:13px" class="mb-1">Ventana de tiempo crítica</h4>
+        <p style="font-size:12px;line-height:1.6">En granizo, el cultivo puede empezar a recuperarse (V3–R2) o secarse (R5+) en 48–72hs. La primera imagen SAR disponible post-evento es la que vale. Revisita Sentinel-1: 3 días (S1A+S1B).</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 8. MODELO -->
   <div class="section-sm" id="modelo">
-    <span class="section-label">7 — Modelo de negocio</span>
-    <h2 class="mb-3">Dos líneas de ingreso con distinta madurez</h2>
+    <span class="section-label">8 — Modelo de negocio</span>
+    <h2 class="mb-3">Dos líneas de ingreso, tres horizontes temporales</h2>
     <div class="grid-2 mt-3">
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem">
-          <div><h4>Línea 1 — SaaS de cartera</h4><p style="font-size:12px">Suscripción anual por hectárea asegurada</p></div>
-          <span class="badge badge-green">Arrancar por acá</span>
-        </div>
+        <div class="flex-between mb-3"><div><h4>Línea 1 — SaaS</h4><p style="font-size:12px">Suscripción anual por hectárea asegurada</p></div><span class="badge badge-green">Arrancar por acá</span></div>
         <table>
-          <thead><tr><th>Tier</th><th>Ha</th><th>USD/ha/año</th><th>Revenue</th></tr></thead>
+          <thead><tr><th>Tier</th><th>Ha</th><th>USD/ha/año</th><th>Revenue potencial</th></tr></thead>
           <tbody>
             <tr><td>Starter</td><td>&lt;500K ha</td><td>1,20</td><td>hasta $600K</td></tr>
             <tr><td>Growth</td><td>500K–2M ha</td><td>1,00</td><td>$500K–2M</td></tr>
             <tr><td>Enterprise</td><td>+2M ha</td><td>negociado</td><td>variable</td></tr>
           </tbody>
         </table>
-        <div class="critical-note mt-2" style="font-size:12px">El precio de USD 1/ha/año es una hipótesis. No hay benchmarks locales. Hay que validarlo con al menos 3 conversaciones reales con tomadores de decisión antes de cerrar el pricing.</div>
+        <div class="critical-note mt-2" style="font-size:12px">USD 1/ha/año es una hipótesis. Validar con conversaciones reales antes de cerrar el pricing.</div>
       </div>
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem">
-          <div><h4>Línea 2 — Verificación por evento</h4><p style="font-size:12px">Fee por siniestro verificado</p></div>
-          <span class="badge badge-amber">Requiere matrícula</span>
-        </div>
+        <div class="flex-between mb-3"><div><h4>Línea 2 — Fee por evento</h4><p style="font-size:12px">Por siniestro verificado</p></div><span class="badge badge-amber">Requiere matrícula</span></div>
         <table>
           <thead><tr><th>Tipo</th><th>Servicio</th><th>USD</th></tr></thead>
           <tbody>
             <tr><td>Sequía / Inundación</td><td>SAR + óptico</td><td>80–150</td></tr>
-            <tr><td>Incendio</td><td>Satelital + delimitación</td><td>100–200</td></tr>
-            <tr><td>Granizo</td><td>Satelital + drone</td><td>200–450</td></tr>
+            <tr><td>Incendio</td><td>Sat. + delimitación</td><td>100–200</td></tr>
+            <tr><td>Granizo</td><td>Sat. + drone</td><td>200–450</td></tr>
             <tr><td>Enfermedades</td><td>Drone multiespectral</td><td>250–500</td></tr>
             <tr><td>Masivo +1.000 ha</td><td>Análisis regional</td><td>800–2.500</td></tr>
           </tbody>
         </table>
-        <div class="warn-box mt-2" style="font-size:12px">Para granizo: el fee tiene que justificarse vs. el costo del perito presencial (que es bajo en distancias cortas y ya está amortizado). El argumento es velocidad y escala en eventos masivos, no sustitución total.</div>
       </div>
+    </div>
+    <div class="card-surface mt-3">
+      <h4 class="mb-2">Línea 3 — Datos para seguros paramétricos (año 3+)</h4>
+      <p style="font-size:13px;max-width:750px">Con suficiente histórico de calibración NDVI vs. rendimiento real por zona y cultivo, AgSure.ai puede ser el proveedor del índice en productos paramétricos. Hoy operan en Brasil, México y África. En Argentina es el siguiente paso natural del mercado.</p>
     </div>
   </div>
 
   <hr class="divider">
 
-  <!-- 8. COSTOS -->
+  <!-- 9. COSTOS -->
   <div class="section-sm" id="costos">
-    <span class="section-label">8 — Costos y viabilidad financiera</span>
-    <h2 class="mb-3">La inversión inicial es manejable. El problema es el tiempo al primer ingreso.</h2>
+    <span class="section-label">9 — Costos y viabilidad</span>
+    <h2 class="mb-3">Inversión manejable. El problema es el tiempo al primer ingreso.</h2>
     <div class="cost-table-section mt-3">
       <div class="card">
         <h4 class="mb-3">Inversión inicial (Año 0)</h4>
         <div class="cost-row"><span>Desarrollo plataforma MVP</span><span>USD 15.000–25.000</span></div>
-        <div class="cost-row"><span>Drone multiespectral<br><small style="color:var(--text-muted)">DJI Mavic 3 Multispectral o equivalente</small></span><span>USD 6.000–9.000</span></div>
-        <div class="cost-row"><span>Datos satelitales premium<br><small style="color:var(--text-muted)">Sentinel gratuito, Planet/Maxar adicional</small></span><span>USD 3.000–8.000</span></div>
-        <div class="cost-row"><span>Licencias GIS y procesamiento</span><span>USD 2.000–4.000</span></div>
+        <div class="cost-row"><span>Drone multiespectral (DJI Mavic 3 Multispectral)</span><span>USD 6.000–9.000</span></div>
+        <div class="cost-row"><span>Datos satelitales premium (Sentinel gratuito vía ESA)</span><span>USD 3.000–8.000</span></div>
+        <div class="cost-row"><span>Licencias GIS</span><span>USD 2.000–4.000</span></div>
         <div class="cost-row"><span>Matrícula SSN + preparación</span><span>USD 500–1.000</span></div>
         <div class="cost-row"><span>Legal + constitución empresa</span><span>USD 1.500–3.000</span></div>
-        <div class="cost-row"><span>Marketing y materiales</span><span>USD 2.000–4.000</span></div>
+        <div class="cost-row"><span>Marketing inicial</span><span>USD 2.000–4.000</span></div>
         <div class="cost-row cost-total"><span>Total estimado</span><span>USD 30.000–54.000</span></div>
       </div>
       <div>
@@ -388,13 +503,12 @@
           <div class="cost-row"><span>Infraestructura cloud</span><span>USD 4.000–8.000</span></div>
           <div class="cost-row"><span>Datos satelitales adicionales</span><span>USD 5.000–15.000</span></div>
           <div class="cost-row"><span>Mantenimiento drone</span><span>USD 1.500–2.500</span></div>
-          <div class="cost-row"><span>Comercial y eventos</span><span>USD 3.000–6.000</span></div>
+          <div class="cost-row"><span>Comercial / eventos</span><span>USD 3.000–6.000</span></div>
           <div class="cost-row cost-total"><span>Total fijo anual</span><span>USD 13.500–31.500</span></div>
         </div>
         <div class="card-surface">
-          <h4 class="mb-2">El problema real del break-even</h4>
-          <p style="font-size:13px;line-height:1.6">Con ciclos de venta de 12–18 meses para corporativas, el primer ingreso significativo puede tardar 18–24 meses. Eso significa que la inversión inicial tiene que aguantar 1,5–2 años sin ingresos relevantes. <strong>USD 30–55K de inversión + USD 13–31K de costos anuales = necesidad de USD 55–120K para llegar al primer cliente SaaS de tamaño.</strong></p>
-          <div class="warn-box mt-2" style="font-size:12px">Si no hay capital propio o financiamiento externo para sostener ese tiempo, la estrategia tiene que ser diferente: arrancar con clientes más chicos (cooperativas, aseguradoras regionales) aunque sean menos rentables, para generar flujo de caja mientras se construye el caso para las grandes.</div>
+          <h4 class="mb-2">Break-even</h4>
+          <p style="font-size:13px;line-height:1.6">Con ciclos de venta de 12–18 meses, el primer ingreso significativo puede tardar 18–24 meses. Necesidad real: USD 55–120K para llegar al primer cliente SaaS de tamaño. Sin capital propio o externo para ese runway, la estrategia tiene que ser diferente: clientes chicos primero (cooperativas, aseguradoras regionales) para generar flujo.</p>
         </div>
       </div>
     </div>
@@ -402,105 +516,146 @@
 
   <hr class="divider">
 
-  <!-- 9. ROADMAP -->
+  <!-- 10. ROADMAP -->
   <div class="section-sm" id="roadmap">
-    <span class="section-label">9 — Roadmap</span>
-    <h2 class="mb-3">Tres fases, con criterios de go/no-go en cada una</h2>
+    <span class="section-label">10 — Roadmap y riesgos</span>
+    <h2 class="mb-3">Tres fases con criterios de go/no-go</h2>
     <div class="roadmap-row mt-3">
       <div class="roadmap-phase phase-1">
         <div class="phase-label">Fase 1 · Meses 1–6</div>
         <div class="phase-title">Validación comercial</div>
         <ul class="phase-list">
           <li>5–10 entrevistas con gerentes de siniestros (antes de escribir código)</li>
-          <li>Validar si pagarían por SaaS de cartera y a cuánto</li>
-          <li>Iniciar trámite matrícula SSN (Martín)</li>
-          <li>Construir caso demo con evento histórico real</li>
+          <li>Validar si pagarían y a cuánto</li>
+          <li>Matrícula SSN (Martín)</li>
+          <li>Caso demo con evento histórico real (Laborde mar-2025)</li>
           <li>Definir figura legal y porcentajes de sociedad</li>
         </ul>
-        <div style="margin-top:0.75rem;font-size:11px;color:var(--red)"><strong>Go/No-go:</strong> al menos 2 tomadores de decisión que digan "pagaríamos por esto" con número concreto.</div>
+        <div style="margin-top:0.75rem;font-size:11px;color:var(--red)"><strong>Go/No-go:</strong> al menos 2 tomadores de decisión con número concreto.</div>
       </div>
       <div class="roadmap-phase phase-2">
         <div class="phase-label">Fase 2 · Meses 6–18</div>
         <div class="phase-title">MVP y primer cliente</div>
         <ul class="phase-list">
-          <li>Desarrollar MVP de plataforma (solo SaaS de cartera)</li>
-          <li>Piloto pago con 1 aseguradora (aunque sea precio simbólico)</li>
-          <li>Matrícula SSN obtenida</li>
-          <li>Primeros informes de siniestro reales con el piloto</li>
-          <li>Medir tiempo real de entrega y coincidencia con perito presencial</li>
+          <li>Desarrollar MVP (solo SaaS de cartera)</li>
+          <li>Piloto pago con 1 aseguradora</li>
+          <li>Matrícula obtenida</li>
+          <li>Primeros informes de siniestro reales</li>
+          <li>Medir precisión vs. peritaje presencial</li>
         </ul>
-        <div style="margin-top:0.75rem;font-size:11px;color:var(--earth)"><strong>Go/No-go:</strong> cliente pagando y datos reales de precisión del sistema.</div>
+        <div style="margin-top:0.75rem;font-size:11px;color:var(--earth)"><strong>Go/No-go:</strong> cliente pagando y datos reales de precisión.</div>
       </div>
       <div class="roadmap-phase phase-3">
         <div class="phase-label">Fase 3 · Meses 18–36</div>
         <div class="phase-title">Escala controlada</div>
         <ul class="phase-list">
           <li>2–4 aseguradoras en plataforma</li>
-          <li>Agregar módulo de verificación de siniestros (con matrícula)</li>
-          <li>Ampliar equipo con primer empleado técnico</li>
-          <li>Evaluar expansión regional con datos reales</li>
-          <li>Decidir si buscar inversión externa o crecer con flujo de caja</li>
+          <li>Agregar módulo de verificación (con matrícula)</li>
+          <li>Primer empleado técnico</li>
+          <li>Evaluar expansión regional</li>
+          <li>Decidir inversión externa o flujo de caja</li>
         </ul>
         <div style="margin-top:0.75rem;font-size:11px;color:var(--green-600)"><strong>Meta:</strong> USD 200K–500K ARR con churn bajo.</div>
       </div>
     </div>
-  </div>
 
-  <hr class="divider">
-
-  <!-- 10. RIESGOS -->
-  <div class="section-sm" id="riesgos">
-    <span class="section-label">10 — Riesgos críticos</span>
-    <h2 class="mb-3">Lo que puede salir mal y cómo mitigarlo</h2>
-    <div class="grid-2 mt-3">
+    <h3 class="mt-4 mb-2">Riesgos críticos</h3>
+    <div class="grid-2 mt-2">
       <div>
-        <h4 class="mb-2" style="color:var(--red)">Riesgos altos</h4>
-        <div class="danger-box mb-2">
-          <strong>El granizo no se puede verificar bien desde satélite</strong><br>
-          Es el 99% del mercado y el daño mecánico foliar no es detectable desde Sentinel. El drone ayuda pero solo si llega el mismo día. <em>Mitigación: ser honesto con el mercado — el producto verifica áreas afectadas y provee contexto histórico, pero el perito sigue siendo necesario para la tasación precisa en granizo.</em>
-        </div>
-        <div class="danger-box mb-2">
-          <strong>Ciclo de ventas más largo de lo esperado</strong><br>
-          Las corporativas del sector seguros pueden tardar 12–24 meses en aprobar un proveedor nuevo. <em>Mitigación: apuntar primero a aseguradoras regionales más ágiles (Río Uruguay, Fed. Patronal) aunque tengan menor volumen.</em>
-        </div>
-        <div class="danger-box">
-          <strong>Capital insuficiente para aguantar la fase de validación</strong><br>
-          Si los ingresos tardan más de 18 meses, el proyecto puede quedar a mitad de camino. <em>Mitigación: mantener costos bajos en la Fase 1, no contratar hasta tener el primer cliente.</em>
-        </div>
+        <div class="danger-box mb-2"><strong>El granizo no se verifica bien solo desde satélite</strong> — es el 99% del mercado. El drone cubre el gap pero requiere respuesta en 24–48hs. Mitigación: posicionarse como complemento objetivo del perito, no como reemplazo total.</div>
+        <div class="danger-box"><strong>Ciclos de venta más largos de lo esperado</strong> — corporativas tardan 12–24 meses. Mitigación: apuntar primero a aseguradoras regionales más ágiles (Río Uruguay, Fed. Patronal).</div>
       </div>
       <div>
-        <h4 class="mb-2" style="color:var(--earth)">Riesgos medios</h4>
-        <div class="warn-box mb-2">
-          <strong>La matrícula SSN tarda o no se obtiene</strong><br>
-          El examen se toma pocas veces al año. Si Martín no aprueba en el primer intento, el módulo de verificación formal se retrasa meses. <em>Mitigación: buscar asociarse con un liquidador matriculado existente para cubrir mientras tanto.</em>
-        </div>
-        <div class="warn-box mb-2">
-          <strong>El pricing no cierra</strong><br>
-          USD 1/ha/año es una hipótesis. Si el mercado valora el producto en USD 0,30/ha, los números del SOM cambian completamente. <em>Mitigación: hacer las entrevistas de validación ANTES de desarrollar.</em>
-        </div>
-        <div class="warn-box">
-          <strong>Volatilidad macro argentina</strong><br>
-          Contratos en pesos con inflación, costos en USD (drone, cloud, datos). El tipo de cambio puede erosionar márgenes. <em>Mitigación: negociar contratos indexados o en USD desde el inicio.</em>
-        </div>
+        <div class="warn-box mb-2"><strong>Matrícula SSN demora o no se obtiene</strong> — examen pocas veces al año. Mitigación: asociarse con liquidador matriculado existente mientras tanto.</div>
+        <div class="warn-box"><strong>El pricing no cierra</strong> — USD 1/ha es hipótesis. Mitigación: validar en entrevistas antes de desarrollar, no después.</div>
       </div>
     </div>
   </div>
 
   <hr class="divider">
 
-  <!-- KPIs -->
-  <div class="section-sm">
-    <span class="section-label">Indicadores clave</span>
+  <!-- 11. PLATAFORMA GEE -->
+  <div class="section-sm" id="plataforma">
+    <span class="section-label">11 — Plataforma de análisis satelital</span>
+    <h2 class="mb-3">Demo interactivo — análisis de los 3 casos piloto</h2>
+    <p class="mb-3" style="max-width:780px">Desarrollamos un prototipo funcional de análisis de granizo usando Google Earth Engine. La herramienta procesa imágenes SAR Sentinel-1 y ópticas Sentinel-2 sobre los tres eventos reales documentados, con toggles de capas y gráficos de serie temporal.</p>
+
+    <!-- GEE embed section -->
+    <div class="gee-section">
+      <div class="gee-topbar">
+        <div class="gee-dots">
+          <div class="gee-dot" style="background:#FF5F56"></div>
+          <div class="gee-dot" style="background:#FFBD2E"></div>
+          <div class="gee-dot" style="background:#27C93F"></div>
+        </div>
+        <div class="gee-title">AgSure.ai — Análisis de daño por granizo · Google Earth Engine</div>
+        <a href="https://mbecosat.users.earthengine.app/view/agsure-draft" target="_blank" style="font-size:11px;color:var(--blue-bright);text-decoration:none">Abrir en pantalla completa →</a>
+      </div>
+
+      <div class="gee-iframe-wrap">
+        <iframe
+          src="https://mbecosat.users.earthengine.app/view/agsure-draft"
+          width="100%"
+          height="100%"
+          frameborder="0"
+          allowfullscreen
+          loading="lazy"
+          title="AgSure.ai — Análisis de daño por granizo">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Uso de la app -->
+    <div id="como-publicar" style="margin-top:1.5rem">
+      <div class="gee-steps">
+        <div class="gee-step">
+          <div class="gee-step-num">1</div>
+          <h5>Seleccionar el caso</h5>
+          <p>En el panel izquierdo elegís uno de los 3 eventos de granizo documentados. El mapa se centra automáticamente en el área afectada y se cargan las imágenes satelitales correspondientes.</p>
+        </div>
+        <div class="gee-step">
+          <div class="gee-step-num">2</div>
+          <h5>Activar capas</h5>
+          <p>Cada capa tiene un checkbox para activarla y un slider de transparencia. Las capas marcadas con ★ son las más relevantes: <strong>Δ CR (backbone SAR)</strong> y <strong>Mapa de daño clasificado</strong>.</p>
+        </div>
+        <div class="gee-step">
+          <div class="gee-step-num">3</div>
+          <h5>Leer los gráficos</h5>
+          <p>Los gráficos de serie temporal muestran la evolución del SAR y del NDVI antes y después del evento. Una caída abrupta en la fecha del siniestro es la firma del daño por granizo.</p>
+        </div>
+      </div>
+      <div class="info-box mt-3" style="font-size:13px">
+        <strong>Sin instalación requerida.</strong> La app corre en los servidores de Google. No necesitás cuenta de Earth Engine ni instalar nada — solo abrir el link en el navegador. · <a href="https://mbecosat.users.earthengine.app/view/agsure-draft" target="_blank" style="color:var(--blue);font-weight:600">Abrir en pantalla completa →</a>
+      </div>
+    </div>
+
+    <!-- Casos piloto -->
+    <h3 class="mt-4 mb-2">Los 3 casos piloto cargados en la plataforma</h3>
+    <table>
+      <thead><tr><th>#</th><th>Fecha</th><th>Zona</th><th>Cultivo</th><th>Ha afectadas</th><th>Daño reportado</th><th>Fuente</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1</strong></td><td>27 mar 2025</td><td>Laborde / Monte Maíz, Córdoba</td><td>Soja R5 + Maíz</td><td>~120.000 ha</td><td>20–100% por lote</td><td>La Nación / Agrolatam</td></tr>
+        <tr><td><strong>2</strong></td><td>28 mar 2025</td><td>Funes / Roldán, Santa Fe</td><td>Soja 1ra + Maíz 2da</td><td>Sin dato oficial</td><td>Hasta 70% en zona E</td><td>La Nación / El Doce</td></tr>
+        <tr><td><strong>3</strong></td><td>19 feb 2026</td><td>Tortugas / Arteaga, Santa Fe</td><td>Maíz pre-cosecha</td><td>~2.000+ ha</td><td>100% en varios lotes</td><td>La Nación</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 12. KPIS -->
+  <div class="section-sm" id="kpis">
+    <span class="section-label">12 — Indicadores clave</span>
     <h2 class="mb-3">Qué medir en cada fase</h2>
     <div class="kpi-grid mt-3">
       <div class="kpi-item"><div class="kpi-dot"></div>Conversaciones calificadas con aseguradoras (Fase 1)</div>
-      <div class="kpi-item"><div class="kpi-dot"></div>Hectáreas bajo plataforma (MRR)</div>
+      <div class="kpi-item"><div class="kpi-dot"></div>Hectáreas bajo plataforma / MRR</div>
       <div class="kpi-item"><div class="kpi-dot"></div>Tiempo promedio de informe (&lt;48hs objetivo)</div>
-      <div class="kpi-item"><div class="kpi-dot"></div>Coincidencia remoto vs. peritaje presencial (%)</div>
+      <div class="kpi-item"><div class="kpi-dot"></div>Coincidencia delta_CR vs. peritaje presencial (%)</div>
+      <div class="kpi-item"><div class="kpi-dot"></div>Pares de calibración drone–satélite acumulados</div>
       <div class="kpi-item"><div class="kpi-dot"></div>Costo por verificación vs. peritaje tradicional</div>
-      <div class="kpi-item"><div class="kpi-dot"></div>Churn de clientes SaaS (tiene que ser &lt;10%/año)</div>
-      <div class="kpi-item"><div class="kpi-dot"></div>Días hasta primer ingreso desde inicio del proyecto</div>
-      <div class="kpi-item"><div class="kpi-dot"></div>NPS de aseguradoras clientes</div>
+      <div class="kpi-item"><div class="kpi-dot"></div>Churn de clientes SaaS (&lt;10%/año objetivo)</div>
+      <div class="kpi-item"><div class="kpi-dot"></div>Días hasta primer ingreso desde inicio</div>
       <div class="kpi-item"><div class="kpi-dot"></div>ARR total y velocidad de crecimiento</div>
     </div>
   </div>
@@ -510,7 +665,7 @@
   <div class="section-sm">
     <span class="section-label">Conclusión</span>
     <h2 class="mb-2">Vale la pena explorar. Con los ojos abiertos.</h2>
-    <p class="mb-3" style="max-width:760px;line-height:1.8">La idea tiene base técnica sólida y un diferencial real en el mercado local. Los riesgos no son insuperables, pero tampoco son menores. El paso más importante antes de invertir capital es hablar con 5–10 personas del sector y validar si el problema que se resuelve es prioritario para ellos y si el precio tiene sentido. Eso no cuesta dinero, solo tiempo — y puede cambiar completamente la dirección del producto.</p>
+    <p class="mb-3" style="max-width:760px;line-height:1.8">La idea tiene base técnica sólida y diferencial real en el mercado local. Los riesgos no son insuperables. El paso más importante antes de invertir capital es hablar con 5–10 personas del sector y validar si el problema que se resuelve es prioritario para ellos y si el precio tiene sentido. Eso no cuesta dinero, solo tiempo.</p>
     <div class="cta-links">
       <a href="landing.html" class="btn btn-primary">Ver propuesta comercial</a>
       <a href="dashboard.html" class="btn btn-secondary">Ver prototipo plataforma</a>
@@ -523,5 +678,6 @@
   <strong>AgSure.ai</strong> · Intelligent Agricultural Insurance · Buenos Aires, Argentina<br>
   <span style="margin-top:6px;display:block"><a href="index.html">Inicio</a> · <a href="landing.html">Landing</a> · <a href="dashboard.html">Dashboard</a></span>
 </footer>
+
 </body>
 </html>
