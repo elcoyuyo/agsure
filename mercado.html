@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análisis de Mercado — AgSure.ai</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .hero-mercado { background: var(--gray-900); color:#fff; padding:3.5rem 0 3rem; }
+    .section-label { font-size:11px; font-weight:700; text-transform:uppercase; color:var(--blue-bright); margin-bottom:0.5rem; display:block; }
+
+    /* STAT STRIP */
+    .stat-strip { display:grid; grid-template-columns:repeat(4,1fr); background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .stat-strip-item { padding:1.25rem 1rem; text-align:center; border-right:1px solid var(--border); }
+    .stat-strip-item:last-child { border-right:none; }
+    .stat-num { font-size:2rem; font-weight:700; letter-spacing:-0.03em; }
+    .stat-num em { color:var(--blue); font-style:normal; }
+    .stat-desc { font-size:12px; color:var(--text-muted); margin-top:2px; }
+
+    /* COBERTURA BREAKDOWN */
+    .cob-bar-row { display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid var(--border); }
+    .cob-bar-row:last-child { border-bottom:none; }
+    .cob-label { font-size:13px; min-width:220px; color:var(--text-secondary); }
+    .cob-bar-track { flex:1; background:var(--border); border-radius:4px; height:8px; overflow:hidden; }
+    .cob-bar-fill { height:100%; border-radius:4px; }
+    .cob-pct { font-size:13px; font-weight:600; min-width:40px; text-align:right; }
+
+    /* COMPANY CARDS */
+    .company-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; }
+    .company-card { border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; }
+    .company-header { padding:0.9rem 1.25rem; display:flex; align-items:flex-start; justify-content:space-between; }
+    .company-name { font-size:16px; font-weight:700; }
+    .company-sub  { font-size:11px; color:var(--text-muted); margin-top:1px; }
+    .company-share { font-size:20px; font-weight:700; }
+    .company-body { padding:1rem 1.25rem; border-top:1px solid var(--border); }
+
+    .h-lasegunda  { background:#EBF2FB; }
+    .h-sancor     { background:#E8F5E8; }
+    .h-allianz    { background:#FFF3E0; }
+    .h-fedpat     { background:#F3E8FF; }
+
+    .c-lasegunda  { color:#1A4F8A; }
+    .c-sancor     { color:#2A7A2A; }
+    .c-allianz    { color:#E65100; }
+    .c-fedpat     { color:#6B21A8; }
+
+    /* PRODUCT TAGS */
+    .prod-list { list-style:none; font-size:12px; color:var(--text-secondary); line-height:2; margin-bottom:0.75rem; }
+    .prod-list li { display:flex; align-items:center; gap:6px; }
+    .prod-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+    .tag-row { display:flex; flex-wrap:wrap; gap:5px; margin-top:0.5rem; }
+    .tag { font-size:10px; font-weight:500; padding:2px 8px; border-radius:10px; }
+    .tag-blue   { background:var(--blue-50); color:var(--blue); }
+    .tag-green  { background:var(--green-50); color:var(--green-600); }
+    .tag-orange { background:#FFF3E0; color:#E65100; }
+    .tag-purple { background:#F3E8FF; color:#6B21A8; }
+    .tag-red    { background:var(--red-50); color:var(--red); }
+    .tag-sat    { background:#ECFDF5; color:#065F46; }
+
+    .opp-box { background:var(--blue-50); border:1px solid var(--blue-100); border-radius:var(--radius-sm); padding:0.75rem 1rem; margin-top:0.75rem; font-size:12px; color:var(--blue); line-height:1.6; }
+    .opp-box strong { display:block; margin-bottom:2px; }
+
+    /* PROCESS FLOW */
+    .process-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:0; position:relative; margin-top:1rem; }
+    .process-grid::before { content:''; position:absolute; top:18px; left:10%; right:10%; height:2px; background:var(--border); z-index:0; }
+    .proc-step { text-align:center; padding:0 0.5rem; position:relative; z-index:1; }
+    .proc-num { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 0.6rem; font-size:12px; font-weight:700; color:#fff; }
+    .proc-step h5 { font-size:11px; font-weight:600; margin-bottom:3px; }
+    .proc-step p  { font-size:10px; color:var(--text-muted); line-height:1.4; }
+    .proc-pain { border-top:2px dashed var(--red); padding-top:4px; }
+    .proc-pain h5 { color:var(--red); }
+
+    /* PARAMETRICO */
+    .param-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-top:1rem; }
+    .param-card { border-radius:var(--radius-md); padding:1.25rem; border:1px solid var(--border); }
+    .param-card.current { background:var(--surface); }
+    .param-card.agsure  { background:var(--blue-50); border-color:var(--blue-100); }
+    .param-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.5rem; }
+    .param-card.current .param-label { color:var(--text-muted); }
+    .param-card.agsure  .param-label { color:var(--blue); }
+    .param-row { display:flex; justify-content:space-between; font-size:12px; padding:5px 0; border-bottom:1px solid var(--border); }
+    .param-row:last-child { border-bottom:none; }
+    .param-key { color:var(--text-muted); }
+    .param-val { font-weight:600; }
+    .param-card.agsure .param-val { color:var(--blue); }
+
+    /* OPPORTUNITY TABLE */
+    .opp-table td.alta  { color:var(--green-600); font-weight:600; }
+    .opp-table td.media { color:var(--earth);     font-weight:600; }
+    .opp-table td.baja  { color:var(--text-muted); }
+
+    /* INSIGHT BOXES */
+    .insight { border-left:4px solid var(--blue); background:var(--blue-50); padding:1rem 1.25rem; border-radius:0 var(--radius-sm) var(--radius-sm) 0; font-size:13px; color:var(--text-secondary); margin:1rem 0; line-height:1.7; }
+    .insight.green { border-color:var(--green); background:var(--green-50); }
+    .insight.warn  { border-color:#F5A623; background:#FFFBF0; color:#6B4A00; }
+
+    /* STRATEGY STEPS */
+    .strategy-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:1rem; }
+    .strat-card { border-radius:var(--radius-md); padding:1.25rem; border:1px solid var(--border); position:relative; }
+    .strat-num { position:absolute; top:-12px; left:16px; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; background:var(--blue); }
+    .strat-card h4 { font-size:13px; margin-bottom:0.5rem; margin-top:0.25rem; }
+    .strat-card p  { font-size:12px; color:var(--text-secondary); line-height:1.6; }
+
+    @media (max-width:768px) {
+      .company-grid, .param-grid, .strategy-row { grid-template-columns:1fr; }
+      .stat-strip { grid-template-columns:1fr 1fr; }
+      .process-grid { grid-template-columns:1fr 1fr; }
+      .process-grid::before { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="logo-mark">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><path d="M16 2L4 7v9c0 6.6 5.1 12.8 12 14.3C22.9 28.8 28 22.6 28 16V7L16 2z" fill="#1A4F8A" opacity="0.12"/><path d="M16 2L4 7v9c0 6.6 5.1 12.8 12 14.3C22.9 28.8 28 22.6 28 16V7L16 2z" fill="none" stroke="#1A4F8A" stroke-width="1.5"/><path d="M9 18c2-3 4-5 7-5s5 2 7 5" stroke="#2A7A2A" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="16" cy="11" r="2" fill="#F5A623"/><ellipse cx="16" cy="17" rx="10" ry="2.5" fill="none" stroke="#3BA0D8" stroke-width="1" opacity="0.6"/></svg>
+      <div class="logo-wordmark"><span class="ag">Ag</span><span class="sure">Sure</span><span class="dot">.</span><span class="ai">ai</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html"     class="nav-link">Inicio</a>
+      <a href="plan.html"      class="nav-link">Plan</a>
+      <a href="mercado.html"   class="nav-link active">Mercado</a>
+      <a href="landing.html"   class="nav-link">Landing</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+    </div>
+    <a href="landing.html#contacto" class="nav-cta">Ver propuesta →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero-mercado">
+  <div class="container">
+    <span style="font-size:11px;font-weight:600;text-transform:uppercase;color:var(--blue-bright)">Análisis de mercado — Mayo 2026</span>
+    <h1 style="color:#fff; margin:0.5rem 0">El mercado de seguros agropecuarios</h1>
+    <p style="color:#aaa; font-size:1rem; max-width:640px">Estructura de productos, mecánica de coberturas y análisis de los principales jugadores. Con foco en dónde AgSure.ai encaja como solución real.</p>
+    <div style="display:flex; gap:0.75rem; margin-top:1.25rem; flex-wrap:wrap">
+      <span class="badge badge-blue">Datos SSN 2024-2025</span>
+      <span class="badge badge-green">Fuentes primarias verificadas</span>
+      <span class="badge badge-gray">Uso interno</span>
+    </div>
+  </div>
+</div>
+
+<!-- STAT STRIP -->
+<div class="stat-strip">
+  <div class="stat-strip-item"><div class="stat-num">$347<em>M</em></div><div class="stat-desc">USD primas anuales · ejercicio 2024-25</div></div>
+  <div class="stat-strip-item"><div class="stat-num">59<em>%</em></div><div class="stat-desc">de las primas son granizo puro</div></div>
+  <div class="stat-strip-item"><div class="stat-num">18<em>M ha</em></div><div class="stat-desc">aseguradas (cayó de 23,5M en 2024)</div></div>
+  <div class="stat-strip-item"><div class="stat-num">36</div><div class="stat-desc">aseguradoras operando el ramo</div></div>
+</div>
+
+<div class="container">
+
+  <!-- 1. ESTRUCTURA DEL MERCADO -->
+  <div class="section-sm">
+    <span class="section-label">1 — Estructura del mercado</span>
+    <h2 class="mb-3">El mercado es, en esencia, granizo sobre soja en la Pampa</h2>
+    <p style="max-width:780px;line-height:1.8" class="mb-3">La distribución de primas lo dice todo. El seguro agropecuario argentino no es un mercado diversificado — es granizo puro más granizo con adicionales, sobre cultivos anuales, en tres provincias. Todo lo demás es marginal.</p>
+
+    <div class="grid-2 mt-3">
+      <div class="card">
+        <h4 class="mb-3">Distribución de primas por tipo de cobertura</h4>
+        <div class="cob-bar-row">
+          <span class="cob-label">Granizo puro</span>
+          <div class="cob-bar-track"><div class="cob-bar-fill" style="width:59%;background:var(--blue)"></div></div>
+          <span class="cob-pct c-lasegunda">59%</span>
+        </div>
+        <div class="cob-bar-row">
+          <span class="cob-label">Granizo con adicionales</span>
+          <div class="cob-bar-track"><div class="cob-bar-fill" style="width:40%;background:var(--blue-bright)"></div></div>
+          <span class="cob-pct" style="color:var(--blue-bright)">40%</span>
+        </div>
+        <div class="cob-bar-row">
+          <span class="cob-label">Multirriesgo agrícola</span>
+          <div class="cob-bar-track"><div class="cob-bar-fill" style="width:1%;background:var(--green)"></div></div>
+          <span class="cob-pct" style="color:var(--green-600)">&lt;1%</span>
+        </div>
+        <div class="cob-bar-row">
+          <span class="cob-label">Pecuario / Forestal</span>
+          <div class="cob-bar-track"><div class="cob-bar-fill" style="width:0.5%;background:var(--gray-200)"></div></div>
+          <span class="cob-pct" style="color:var(--text-muted)">0,5%</span>
+        </div>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:8px">Fuente: SSN, Encuesta de Seguros Agropecuarios 2024-2025</p>
+      </div>
+
+      <div class="card">
+        <h4 class="mb-3">Distribución geográfica de primas</h4>
+        <div class="cob-bar-row">
+          <span class="cob-label">Buenos Aires</span>
+          <div class="cob-bar-track"><div class="cob-bar-fill" style="width:36.7%;background:var(--blue)"></div></div>
+          <span class="cob-pct c-lasegunda">36,7%</span>
+        </div>
+        <div class="cob-bar-row">
+          <span class="cob-label">Córdoba</span>
+          <div class="cob-bar-track"><div class="cob-bar-fill" style="width:31%;background:var(--blue)"></div></div>
+          <span class="cob-pct c-lasegunda">31%</span>
+        </div>
+        <div class="cob-bar-row">
+          <span class="cob-label">Santa Fe</span>
+          <div class="cob-bar-track"><div class="cob-bar-fill" style="width:20%;background:var(--blue)"></div></div>
+          <span class="cob-pct c-lasegunda">20%</span>
+        </div>
+        <div class="cob-bar-row">
+          <span class="cob-label">La Pampa + Entre Ríos</span>
+          <div class="cob-bar-track"><div class="cob-bar-fill" style="width:8%;background:var(--gray-200)"></div></div>
+          <span class="cob-pct" style="color:var(--text-muted)">8%</span>
+        </div>
+        <div class="cob-bar-row">
+          <span class="cob-label">Resto del país</span>
+          <div class="cob-bar-track"><div class="cob-bar-fill" style="width:4.3%;background:var(--gray-200)"></div></div>
+          <span class="cob-pct" style="color:var(--text-muted)">4,3%</span>
+        </div>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:8px">3 provincias = 87% del mercado. Target inicial: zona núcleo pampeana.</p>
+      </div>
+    </div>
+
+    <div class="insight mt-3">
+      <strong>Dato estructural relevante:</strong> las coberturas con adicionales concentran una proporción mayor de los siniestros pagados que de las primas — es decir, quien contrata el paquete completo (granizo + viento + heladas + merma) tiene más eventos y de mayor valor. Esos contratos son los más complejos de liquidar y donde AgSure.ai tiene más valor para ofrecer.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 2. COMO FUNCIONA UN SINIESTRO -->
+  <div class="section-sm">
+    <span class="section-label">2 — Cómo se procesa un siniestro hoy</span>
+    <h2 class="mb-3">El proceso actual es lento, caro y no escala</h2>
+    <p class="mb-3" style="max-width:760px">En granizo puro, el flujo típico desde la denuncia hasta el pago tiene 6 pasos. Los pasos 3 y 4 son los cuello de botella — son exactamente los que AgSure.ai puede reemplazar o acelerar.</p>
+
+    <div class="process-grid">
+      <div class="proc-step">
+        <div class="proc-num" style="background:var(--blue)">1</div>
+        <h5>Denuncia</h5>
+        <p>El productor llama al PAS dentro de las 72hs del evento</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num" style="background:var(--blue)">2</div>
+        <h5>Apertura del caso</h5>
+        <p>El PAS eleva a la aseguradora. Se abre el expediente.</p>
+      </div>
+      <div class="proc-step proc-pain">
+        <div class="proc-num" style="background:var(--red)">3</div>
+        <h5>Designación del perito</h5>
+        <p>La aseguradora asigna un liquidador del panel. Coordina agenda y traslado.</p>
+      </div>
+      <div class="proc-step proc-pain">
+        <div class="proc-num" style="background:var(--red)">4</div>
+        <h5>Visita de campo</h5>
+        <p>El perito viaja al lote (puede ser a 300km). Evalúa visualmente. Sin contexto histórico.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num" style="background:var(--blue)">5</div>
+        <h5>Informe técnico</h5>
+        <p>Redacta % daño, causa y monto estimado. La aseguradora acepta o negocia.</p>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--red);text-align:center;margin-top:8px">Los pasos en rojo son los que AgSure.ai reemplaza — tiempo total: 5–15 días hábiles → objetivo: menos de 48hs</p>
+
+    <div class="grid-2 mt-3">
+      <div class="card-surface">
+        <h4 class="mb-2">Costos del proceso actual</h4>
+        <table>
+          <thead><tr><th>Ítem</th><th>Costo estimado</th></tr></thead>
+          <tbody>
+            <tr><td>Honorarios del liquidador</td><td>USD 80–300 por siniestro</td></tr>
+            <tr><td>Traslados (combustible, estadía)</td><td>USD 30–150 por visita</td></tr>
+            <tr><td>Tiempo del proceso completo</td><td>5–15 días hábiles</td></tr>
+            <tr><td>Costo en eventos masivos</td><td>Colapso operativo — no escala</td></tr>
+            <tr><td>Fraude no detectado</td><td>8–12% de siniestros estimado</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-surface">
+        <h4 class="mb-2">El problema del evento masivo</h4>
+        <p style="font-size:13px;line-height:1.7">Una tormenta como el Caso 1 (Laborde, 27 mar 2025) puede generar 500–2.000 denuncias simultáneas sobre 120.000 ha. El sistema de peritaje presencial colapsa: no hay suficientes liquidadores, los traslados se acumulan, y los primeros en recibir perito tienen ventaja sobre los últimos. El sistema es sistémicamente inequitativo cuando hay eventos masivos — exactamente los eventos más dañinos y frecuentes con el cambio climático.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 3. PRINCIPALES COMPAÑIAS -->
+  <div class="section-sm">
+    <span class="section-label">3 — Los principales jugadores</span>
+    <h2 class="mb-3">Cuatro compañías que concentran el 70% del mercado</h2>
+
+    <div class="company-grid">
+
+      <!-- LA SEGUNDA -->
+      <div class="company-card">
+        <div class="company-header h-lasegunda">
+          <div>
+            <div class="company-name c-lasegunda">La Segunda Seguros</div>
+            <div class="company-sub">Líder del mercado · Origen cooperativo ACA</div>
+          </div>
+          <div class="text-right">
+            <div class="company-share c-lasegunda">~20%</div>
+            <div style="font-size:10px;color:var(--text-muted)">share de primas</div>
+          </div>
+        </div>
+        <div class="company-body">
+
+          <p style="font-size:12px;color:var(--text-secondary);margin-bottom:0.75rem;line-height:1.6">Nacida del cooperativismo agropecuario (ACA). Más de 600 agencias y 5 millones de hectáreas aseguradas. Red de tasadores propios. Líder histórico por volumen y presencia territorial.</p>
+
+          <h5 style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px">Productos actuales</h5>
+          <ul class="prod-list">
+            <li><div class="prod-dot" style="background:var(--blue)"></div>Granizo tradicional (puro, franquicia 6% no deducible)</li>
+            <li><div class="prod-dot" style="background:var(--blue)"></div>Granizo + Viento fuerte</li>
+            <li><div class="prod-dot" style="background:var(--blue)"></div>Granizo + Heladas (campaña invierno: trigo, cebada)</li>
+            <li><div class="prod-dot" style="background:var(--blue)"></div>Granizo + Viento + Heladas + Planchado + Resiembra (verano: soja, maíz, girasol)</li>
+            <li><div class="prod-dot" style="background:var(--blue)"></div>Incendio cultivos y rastrojos (sin cargo adicional)</li>
+            <li><div class="prod-dot" style="background:#F5A623)"></div>Sequía + Inundación — <strong>PILOTO 2025-26</strong> con Gobierno de Córdoba</li>
+          </ul>
+
+          <div class="tag-row">
+            <span class="tag tag-blue">Granizo líder</span>
+            <span class="tag tag-orange">Sequía piloto</span>
+            <span class="tag tag-orange">Inundación piloto</span>
+            <span class="tag tag-blue">Red territorial fuerte</span>
+          </div>
+
+          <div class="opp-box">
+            <strong>Oportunidad para AgSure.ai</strong>
+            Acaban de lanzar cobertura de sequía e inundación sin infraestructura de verificación remota propia. Necesitan exactamente lo que ofrecemos para ese producto nuevo. Entrada por el producto nuevo, no por el granizo establecido.
+          </div>
+        </div>
+      </div>
+
+      <!-- SANCOR -->
+      <div class="company-card">
+        <div class="company-header h-sancor">
+          <div>
+            <div class="company-name c-sancor">Sancor Seguros</div>
+            <div class="company-sub">Mayor grupo asegurador de Argentina · Innovador en tech</div>
+          </div>
+          <div class="text-right">
+            <div class="company-share c-sancor">~18%</div>
+            <div style="font-size:10px;color:var(--text-muted)">share de primas</div>
+          </div>
+        </div>
+        <div class="company-body">
+
+          <p style="font-size:12px;color:var(--text-secondary);margin-bottom:0.75rem;line-height:1.6">N°1 del mercado asegurador general argentino (12,32% de share total). Tiene fondo de venture capital (Sancor Seguros Ventures) que invierte en insurtech. Presencia en Uruguay, Paraguay y Brasil.</p>
+
+          <h5 style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px">Productos actuales</h5>
+          <ul class="prod-list">
+            <li><div class="prod-dot" style="background:var(--green)"></div>Granizo Max — pack premium con hasta 9 coberturas combinadas</li>
+            <li><div class="prod-dot" style="background:var(--green)"></div>Granizo + Merma de rendimiento (paga si el rinde final cae)</li>
+            <li><div class="prod-dot" style="background:var(--green)"></div>Daño Total — si daño ≥ 90%, se paga el 100%</li>
+            <li><div class="prod-dot" style="background:var(--green)"></div>Doble cultivo: trigo/cebada + soja/maíz mismo lote, sin carencia en soja</li>
+            <li><div class="prod-dot" style="background:var(--green)"></div>Maíz Plus — indemnización fija de 5qq/ha adicional</li>
+            <li><div class="prod-dot" style="background:#10B981"></div><strong>Sequía Max — PARAMÉTRICO basado en TVDI satelital (CONAE)</strong></li>
+          </ul>
+
+          <div class="tag-row">
+            <span class="tag tag-green">Mayor innovador</span>
+            <span class="tag tag-sat">Ya usa índice satelital</span>
+            <span class="tag tag-green">Ventures / insurtech</span>
+            <span class="tag tag-green">Latam</span>
+          </div>
+
+          <div class="opp-box" style="background:#ECFDF5;border-color:#6EE7B7;color:#065F46">
+            <strong>El dato más importante del análisis</strong>
+            Sancor YA usa el índice satelital TVDI (basado en MODIS, 250m, actualización cada 16 días) para su seguro de sequía paramétrico, desarrollado con el Instituto Gulich/CONAE. AgSure.ai puede ofrecer exactamente el mismo concepto con Sentinel-1 SAR a 10m de resolución y revisita de 3–6 días — una mejora de 1 a 2 órdenes de magnitud. La barrera de adopción tecnológica ya está rota por ellos mismos.
+          </div>
+        </div>
+      </div>
+
+      <!-- ALLIANZ -->
+      <div class="company-card">
+        <div class="company-header h-allianz">
+          <div>
+            <div class="company-name c-allianz">Allianz Argentina</div>
+            <div class="company-sub">Respaldo internacional · Red de 350 tasadores</div>
+          </div>
+          <div class="text-right">
+            <div class="company-share c-allianz">~14%</div>
+            <div style="font-size:10px;color:var(--text-muted)">share de primas</div>
+          </div>
+        </div>
+        <div class="company-body">
+
+          <p style="font-size:12px;color:var(--text-secondary);margin-bottom:0.75rem;line-height:1.6">Filial de Allianz SE (Alemania), el mayor grupo asegurador del mundo. En Argentina tiene saldo de pago de USD 40 millones en siniestros agrícolas. Red de tasadores especializados como diferencial.</p>
+
+          <h5 style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px">Productos actuales</h5>
+          <ul class="prod-list">
+            <li><div class="prod-dot" style="background:var(--earth)"></div>Granizo + Incendio (franquicia 6%, cobertura tradicional)</li>
+            <li><div class="prod-dot" style="background:var(--earth)"></div>Granizo + Incendio con deducible (variante)</li>
+            <li><div class="prod-dot" style="background:var(--earth)"></div>Granizo con franquicia 5% sobre SAT</li>
+            <li><div class="prod-dot" style="background:var(--earth)"></div>Cobertura amplia de cultivos: trigo, soja, maíz, girasol, papa, arroz, sorgo, legumbres</li>
+            <li><div class="prod-dot" style="background:var(--gray-200)"></div>Sin productos paramétricos visibles en oferta actual</li>
+          </ul>
+
+          <div class="tag-row">
+            <span class="tag tag-orange">Respaldo global</span>
+            <span class="tag tag-orange">Red tasadores propia</span>
+            <span class="tag tag-orange">Reaseguro internacional</span>
+          </div>
+
+          <div class="opp-box" style="background:#FFF3E0;border-color:#FCD34D;color:#92400E">
+            <strong>Oportunidad para AgSure.ai</strong>
+            La casa matriz Allianz SE ya conoce y usa herramientas de teledetección en Europa. El canal de entrada puede ser a través de las reaseguradoras internacionales que trabajan con Allianz Argentina — Munich Re y Swiss Re tienen programas específicos de agricultural parametric. No entrar por el lado local, sino por el lado corporativo.
+          </div>
+        </div>
+      </div>
+
+      <!-- FED PATRONAL -->
+      <div class="company-card">
+        <div class="company-header h-fedpat">
+          <div>
+            <div class="company-name c-fedpat">Federación Patronal</div>
+            <div class="company-sub">100+ años en el mercado · Perfil regional</div>
+          </div>
+          <div class="text-right">
+            <div class="company-share c-fedpat">~7%</div>
+            <div style="font-size:10px;color:var(--text-muted)">share de primas</div>
+          </div>
+        </div>
+        <div class="company-body">
+
+          <p style="font-size:12px;color:var(--text-secondary);margin-bottom:0.75rem;line-height:1.6">Una de las aseguradoras más antiguas del país. Fuerte presencia en Buenos Aires y zona pampeana. Estructura más ágil que las grandes corporativas para tomar decisiones de piloto.</p>
+
+          <h5 style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px">Productos actuales</h5>
+          <ul class="prod-list">
+            <li><div class="prod-dot" style="background:#6B21A8"></div>Granizo desde emergencia hasta cosecha</li>
+            <li><div class="prod-dot" style="background:#6B21A8"></div>Incendio cultivos en pie</li>
+            <li><div class="prod-dot" style="background:#6B21A8"></div>Heladas (afectación del desarrollo)</li>
+            <li><div class="prod-dot" style="background:#6B21A8"></div>Viento fuerte (plantas incosechables)</li>
+            <li><div class="prod-dot" style="background:var(--gray-200)"></div>Sin productos paramétricos en cartera</li>
+          </ul>
+
+          <div class="tag-row">
+            <span class="tag tag-purple">Más ágil para pilotos</span>
+            <span class="tag tag-purple">Perfil regional</span>
+            <span class="tag tag-purple">Sin tech propia</span>
+          </div>
+
+          <div class="opp-box" style="background:#F3E8FF;border-color:#C4B5FD;color:#4C1D95">
+            <strong>Oportunidad para AgSure.ai</strong>
+            Primera puerta para un piloto pagado. Menor ciclo de venta que La Segunda o Allianz, sin tech interna que defender. Un contrato piloto con Fed. Patronal genera el caso de uso real que después abre las puertas de las grandes.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tabla comparativa rápida -->
+    <h3 class="mt-4 mb-2">Tabla comparativa — oportunidad para AgSure.ai por compañía</h3>
+    <table class="opp-table">
+      <thead>
+        <tr>
+          <th>Compañía</th>
+          <th>Share</th>
+          <th>Tech satelital propia</th>
+          <th>Productos nuevos que necesitan verificación</th>
+          <th>Ciclo de venta estimado</th>
+          <th>Oportunidad AgSure.ai</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>La Segunda</strong></td>
+          <td>~20%</td>
+          <td>No</td>
+          <td>Sequía + Inundación (piloto Córdoba)</td>
+          <td>12–18 meses</td>
+          <td class="alta">Alta — producto nuevo sin infraestructura</td>
+        </tr>
+        <tr>
+          <td><strong>Sancor</strong></td>
+          <td>~18%</td>
+          <td>Sí (TVDI/CONAE)</td>
+          <td>Upgrade resolución TVDI, granizo SAR</td>
+          <td>6–12 meses</td>
+          <td class="alta">Alta — ya aceptaron el índice satelital</td>
+        </tr>
+        <tr>
+          <td><strong>Allianz</strong></td>
+          <td>~14%</td>
+          <td>No (local)</td>
+          <td>Ninguno visible</td>
+          <td>18–24 meses</td>
+          <td class="media">Media — entrar por reaseguradoras internacionales</td>
+        </tr>
+        <tr>
+          <td><strong>Fed. Patronal</strong></td>
+          <td>~7%</td>
+          <td>No</td>
+          <td>Ninguno declarado</td>
+          <td>6–9 meses</td>
+          <td class="media">Media — ideal para piloto inicial</td>
+        </tr>
+        <tr>
+          <td><strong>Mapfre / Zurich / HDI</strong></td>
+          <td>~10% c/u</td>
+          <td>No</td>
+          <td>Variable</td>
+          <td>12–24 meses</td>
+          <td class="baja">Baja-media — evaluar en fase 2</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 4. EL CASO SANCOR-TVDI -->
+  <div class="section-sm">
+    <span class="section-label">4 — El caso Sancor + TVDI: la puerta ya abierta</span>
+    <h2 class="mb-3">Ya existe un seguro paramétrico satelital en Argentina. Nosotros podemos hacerlo mejor.</h2>
+    <p class="mb-3" style="max-width:780px">Este es el hallazgo más relevante del análisis. Sancor lanzó Sequía Max usando el índice TVDI satelital publicado por la CONAE/Instituto Gulich. El producto existe, el mercado lo aceptó, y la regulación no fue un impedimento. La pregunta es si AgSure.ai puede ofrecer algo mejor.</p>
+
+    <div class="param-grid">
+      <div class="param-card current">
+        <div class="param-label">Estado actual — Sancor Sequía Max</div>
+        <div class="param-row"><span class="param-key">Índice usado</span><span class="param-val">TVDI (Temperature Vegetation Dryness Index)</span></div>
+        <div class="param-row"><span class="param-key">Fuente de datos</span><span class="param-val">MODIS (NASA) vía CONAE / Instituto Gulich</span></div>
+        <div class="param-row"><span class="param-key">Resolución espacial</span><span class="param-val">250m – 1km</span></div>
+        <div class="param-row"><span class="param-key">Frecuencia actualización</span><span class="param-val">Cada 16 días</span></div>
+        <div class="param-row"><span class="param-key">Funciona con nubes</span><span class="param-val">No (óptico)</span></div>
+        <div class="param-row"><span class="param-key">Cultivos</span><span class="param-val">Soja y Maíz</span></div>
+        <div class="param-row"><span class="param-key">Escala actual</span><span class="param-val">~110.000 ha (vs 9M granizo)</span></div>
+        <div class="param-row"><span class="param-key">Quién lo desarrolló</span><span class="param-val">CONAE / Instituto Gulich (tercero)</span></div>
+      </div>
+      <div class="param-card agsure">
+        <div class="param-label">Lo que AgSure.ai puede ofrecer</div>
+        <div class="param-row"><span class="param-key">Índices usados</span><span class="param-val">SAR VH/VV + NDVI Sentinel + TVDI mejorado</span></div>
+        <div class="param-row"><span class="param-key">Fuente de datos</span><span class="param-val">Sentinel-1/2 (ESA) + integración CONAE</span></div>
+        <div class="param-row"><span class="param-key">Resolución espacial</span><span class="param-val"><strong>10m</strong> — 25× mejor que MODIS</span></div>
+        <div class="param-row"><span class="param-key">Frecuencia actualización</span><span class="param-val"><strong>3–6 días</strong> — 2,5× más frecuente</span></div>
+        <div class="param-row"><span class="param-key">Funciona con nubes</span><span class="param-val"><strong>Sí</strong> — SAR penetra nubes</span></div>
+        <div class="param-row"><span class="param-key">Cultivos</span><span class="param-val">Soja, Maíz, Trigo, Girasol, Sorgo</span></div>
+        <div class="param-row"><span class="param-key">Potencial de escala</span><span class="param-val">Todo el mercado (18M ha)</span></div>
+        <div class="param-row"><span class="param-key">Diferencial clave</span><span class="param-val">Plataforma propia + verificación de granizo</span></div>
+      </div>
+    </div>
+
+    <div class="insight green mt-3">
+      <strong>Lo que esto implica para la estrategia de entrada:</strong> No hay que convencer a Sancor de que los índices satelitales funcionan para seguros — ellos ya lo saben y lo venden. Hay que mostrarles que la versión de AgSure.ai (Sentinel 10m, SAR, más rápida) es superior al TVDI/MODIS que usan hoy. Esa es una conversación técnica entre pares, no una venta de concepto.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 5. COBERTURAS DETALLADAS -->
+  <div class="section-sm">
+    <span class="section-label">5 — Mapa de coberturas detallado</span>
+    <h2 class="mb-3">Qué cubre cada producto y cómo se activa</h2>
+    <p class="mb-2" style="max-width:760px">Este es el vocabulario que usa el mercado. Entender cada cobertura es fundamental para diseñar la propuesta correcta para cada compañía.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Cobertura</th>
+          <th>Qué protege</th>
+          <th>Cuándo activa</th>
+          <th>Franquicia típica</th>
+          <th>Cómo se verifica hoy</th>
+          <th>AgSure.ai puede</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Granizo puro</strong></td>
+          <td>Pérdida en cantidad por impacto de granizo. No cubre calidad.</td>
+          <td>Denuncia en 72hs. Cultivo arraigado al suelo.</td>
+          <td>6% no deducible</td>
+          <td>Visita presencial del perito. Visual.</td>
+          <td><span class="badge badge-amber">Parcial</span> SAR + drone en 48hs</td>
+        </tr>
+        <tr>
+          <td><strong>Incendio</strong></td>
+          <td>Daño directo o indirecto del fuego sobre cultivos en pie o rastrojos.</td>
+          <td>SA disponible: 50–80% de la SA de granizo.</td>
+          <td>Generalmente sin franquicia</td>
+          <td>Visita presencial. Fotos.</td>
+          <td><span class="badge badge-green">Sí</span> NBR satelital muy preciso</td>
+        </tr>
+        <tr>
+          <td><strong>Resiembra</strong></td>
+          <td>Gastos de resiembra cuando un riesgo cubierto daña el cultivo temprano (emergencia → 30cm en soja).</td>
+          <td>SA: 20–50% según póliza. Solo si el productor resiembra.</td>
+          <td>Sin franquicia</td>
+          <td>Visita. Comprobante de insumos.</td>
+          <td><span class="badge badge-blue">Apoyo</span> Verificar que el lote fue afectado</td>
+        </tr>
+        <tr>
+          <td><strong>Viento fuerte</strong></td>
+          <td>Vuelco irreversible, defoliación o tronchado por efecto mecánico del viento.</td>
+          <td>Cultivo incosechable como consecuencia directa.</td>
+          <td>5–10% deducible</td>
+          <td>Visita presencial.</td>
+          <td><span class="badge badge-amber">Parcial</span> SAR detecta acame masivo</td>
+        </tr>
+        <tr>
+          <td><strong>Heladas</strong></td>
+          <td>Muerte de plantas, malformación de grano en llenado, esterilidad en floración por temperatura ≤ 0°C.</td>
+          <td>Temperatura registrada + daño observable.</td>
+          <td>Variable</td>
+          <td>Registro meteorológico + visita.</td>
+          <td><span class="badge badge-blue">Apoyo</span> Confirmar evento + NDVI post</td>
+        </tr>
+        <tr>
+          <td><strong>Planchado de suelos</strong></td>
+          <td>Imposibilidad de cosecha mecánica por inconsistencia del suelo por exceso de lluvia ≥ 30 días post-madurez.</td>
+          <td>30 días después de madurez fisiológica.</td>
+          <td>Deducible variable</td>
+          <td>Medición de lluvia + evaluación.</td>
+          <td><span class="badge badge-green">Sí</span> SAR detecta humedad de suelo</td>
+        </tr>
+        <tr>
+          <td><strong>Merma de rendimiento</strong></td>
+          <td>Cubre cuando el rinde real queda por debajo del rinde de garantía preestablecido. Abarca múltiples riesgos.</td>
+          <td>Al momento de cosecha. Requiere pesaje o muestras oficiales.</td>
+          <td>15–30% deducible</td>
+          <td>Múltiples visitas durante la campaña.</td>
+          <td><span class="badge badge-green">Sí</span> Monitoreo continuo NDVI toda la campaña</td>
+        </tr>
+        <tr>
+          <td><strong>Sequía paramétrica</strong></td>
+          <td>Variación del déficit hídrico medido por índice TVDI. No requiere visita — el índice dispara el pago.</td>
+          <td>Automático al cruzar el umbral del índice cada 16 días.</td>
+          <td>Calibrado en el umbral</td>
+          <td>El índice satelital es la verificación</td>
+          <td><span class="badge badge-green">Mejora</span> Sentinel 10m + SAR vs MODIS 250m</td>
+        </tr>
+        <tr>
+          <td><strong>Daño total</strong> (Sancor)</td>
+          <td>Si el daño por granizo supera el 90%, se indemniza el 100% independientemente de si el productor resiembra.</td>
+          <td>Daño ≥ 90% de la SA.</td>
+          <td>Sin franquicia adicional</td>
+          <td>Visita presencial. Constatación.</td>
+          <td><span class="badge badge-amber">Parcial</span> SAR + drone confirma destrucción total</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 6. ESTRATEGIA DE ENTRADA -->
+  <div class="section-sm">
+    <span class="section-label">6 — Estrategia de entrada recomendada</span>
+    <h2 class="mb-3">No por donde el mercado es más grande, sino por donde la puerta está abierta</h2>
+    <p class="mb-3" style="max-width:760px">El granizo puro (59% del mercado) es el objetivo de largo plazo pero la puerta más difícil. Los productos nuevos y paramétricos son la puerta de entrada — porque las aseguradoras ya reconocieron que necesitan algo que no tienen.</p>
+
+    <div class="strategy-row">
+      <div class="strat-card">
+        <div class="strat-num">1</div>
+        <h4>Entrar por sequía e inundación</h4>
+        <p>La Segunda tiene un piloto de sequía/inundación en Córdoba sin infraestructura de verificación remota. Sancor tiene el TVDI pero quiere mejorarlo. Estos son los dos clientes con necesidad activa declarada. El argumento no es "reemplazar el perito" — es "darles la herramienta que necesitan para un producto que ya lanzaron".</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-num">2</div>
+        <h4>Plataforma de cartera — para todos</h4>
+        <p>El SaaS de visualización geoespacial de cartera + alertas NDVI es un producto que cualquiera de las 4 compañías puede contratar sin que implique cambiar su proceso de peritaje. Es complementario, no competitivo. Genera ingresos recurrentes mientras se construye la confianza para el módulo de verificación de siniestros.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-num">3</div>
+        <h4>Granizo — por el drone, no por el satélite</h4>
+        <p>Para granizo, el argumento de venta no es "el satélite reemplaza al perito". Es "el drone confirma el área afectada en 24hs, con evidencia objetiva y georeferenciada, antes de que el cultivo evolucione". El satélite delimita la zona, el drone cuantifica el daño, el perito valida y firma. Nadie pierde su rol — el proceso se acelera y se documenta mejor.</p>
+      </div>
+    </div>
+
+    <div class="insight warn mt-3">
+      <strong>Lo que hay que evitar:</strong> presentarse como "reemplazo del liquidador". El mercado reacciona defensivamente. La narrativa correcta es "herramienta que potencia al liquidador y a la aseguradora" — más rápido, más objetivo, más escalable en eventos masivos. El liquidador sigue siendo necesario para firmar el informe final; AgSure.ai le da la evidencia técnica que hoy no tiene.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- CONCLUSION -->
+  <div class="section-sm">
+    <span class="section-label">Conclusión</span>
+    <h2 class="mb-2">Lo que este análisis le dice a AgSure.ai</h2>
+    <div class="grid-2 mt-3">
+      <div>
+        <h4 class="mb-2" style="color:var(--green-600)">Lo que confirma</h4>
+        <ul style="font-size:13px;color:var(--text-secondary);line-height:2;list-style:none">
+          <li>→ El mercado YA aceptó los índices satelitales como base legal de pago (Sancor TVDI)</li>
+          <li>→ Las aseguradoras líderes están lanzando productos nuevos (sequía/inundación) sin tech propia</li>
+          <li>→ La alta siniestralidad (72,9%) presiona a reducir costos de verificación</li>
+          <li>→ El SAR de Sentinel-1 es superior al MODIS usado por el único competidor interno</li>
+          <li>→ Federación Patronal es viable como primer cliente piloto</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="mb-2" style="color:var(--red)">Lo que no cambia</h4>
+        <ul style="font-size:13px;color:var(--text-secondary);line-height:2;list-style:none">
+          <li>→ El granizo puro (59% del mercado) sigue siendo difícil de verificar solo desde satélite</li>
+          <li>→ Sin matrícula SSN, los informes son referenciales, no formales</li>
+          <li>→ Los ciclos de venta con corporativas son largos (6–24 meses)</li>
+          <li>→ El pricing de USD 1/ha es una hipótesis no validada</li>
+          <li>→ El primer paso es hablar con la gente, no desarrollar el producto</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:2.5rem">
+      <a href="plan.html" class="btn btn-primary">Ver plan de negocios completo</a>
+      <a href="landing.html" class="btn btn-secondary" style="margin-left:0.75rem">Ver propuesta comercial</a>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <strong>AgSure.ai</strong> · Intelligent Agricultural Insurance · Buenos Aires, Argentina<br>
+  <span style="margin-top:6px;display:block">
+    <a href="index.html">Inicio</a> ·
+    <a href="plan.html">Plan de negocios</a> ·
+    <a href="mercado.html">Mercado</a> ·
+    <a href="dashboard.html">Plataforma</a>
+  </span>
+</footer>
+
+</body>
+</html>
